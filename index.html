@@ -24,20 +24,34 @@
 
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="theme-color" content="#ffffff">
     </head>
 
     <body>
         <div id="content">
-            <div id="intro">Hi, I'm <span id="name">Luke</span>.</div>
+            <div id="intro">
+                <span class="fadein fadein-first">Hi,</span>
+                <span class="fadein fadein-second">I'm</span>
+                <span id="name-container" class="fadein fadein-third"><span id="name">Luke</span></span><span class="fadein fadein-third">.</span>
+            </div>
+
             <div id="links">
-                <a href="https://twitter.com/treebasher"><span class="linkBg">Twitter</span><span class="linkFg">Twitter</span>Twitter</a>
-                <a href="https://www.linkedin.com/in/lukehollenback"><span class="linkBg">LinkedIn</span><span class="linkFg">LinkedIn</span>LinkedIn</a>
-                <a href="https://github.com/treebasher"><span class="linkBg">Github</span><span class="linkFg">Github</span>Github</a>
-                <a href="https://stackoverflow.com/users/5684441/treebasher"><span class="linkBg">Stack Overflow</span><span class="linkFg">Stack Overflow</span>Stack Overflow</a>
-                <a href="https://www.codementor.io/treebasher"><span class="linkBg">Codementor</span><span class="linkFg">Codementor</span>Codementor</a>
-                <a href="https://medium.com/@treebasher"><span class="linkBg">Medium</span><span class="linkFg">Medium</span>Medium</a>
-                <a href="https://soundcloud.com/lukehollenback"><span class="linkBg">Soundcloud</span><span class="linkFg">Soundcloud</span>Soundcloud</a>
+                <div class="links-group fadein fadein-fourth">
+                    <a href="https://twitter.com/treebasher">Twitter</a>
+                    <a href="https://www.linkedin.com/in/lukehollenback">LinkedIn</a>
+                    <a href="https://medium.com/@treebasher">Medium</a>
+                </div>
+
+                <div class="links-group fadein fadein-fifth">
+                    <a href="https://github.com/treebasher">Github</a>
+                    <a href="https://stackoverflow.com/users/5684441/treebasher">Stack Overflow</a>
+                    <a href="https://www.codementor.io/treebasher">Codementor</a>
+                </div>
+
+                <div class="links-group fadein fadein-sixth">
+                    <a href="https://soundcloud.com/lukehollenback">Soundcloud</a>
+                </div>
             </div>
         </div>
     </body>
