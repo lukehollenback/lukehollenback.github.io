@@ -59,7 +59,8 @@ a:hover {
 }
 
 #content {
-    margin: 25vh 15vw 25vh 15vw;
+    margin-top: 25vh;
+    margin-left: 15vw;
 }
 
 #intro {
@@ -91,7 +92,7 @@ a:hover {
 
 @media only all and (max-width: 800px) {
     body {
-        font-size: 0.25em;
+        font-size: 0.33em;
     }
 
     #links {
