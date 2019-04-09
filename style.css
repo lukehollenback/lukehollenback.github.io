@@ -80,7 +80,7 @@ a:hover {
     padding-left: 1%;
     border-left: 8px solid #373737;
     border-radius: 4px;
-    height: 2em;
+    min-height: 2em;
     line-height: 2em;
 }
 
