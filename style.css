@@ -80,7 +80,6 @@ a:hover {
     padding-left: 1%;
     border-left: 8px solid #373737;
     border-radius: 4px;
-    min-height: 2em;
     line-height: 2em;
 }
 
@@ -92,7 +91,7 @@ a:hover {
 
 @media only all and (max-width: 800px) {
     body {
-        font-size: 0.5em;
+        font-size: 0.33em;
     }
 
     #links {
