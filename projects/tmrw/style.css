@@ -31,8 +31,8 @@ body {
 	position: absolute;
 	top: -16px;
 	left: -16px;
-	bottom: 16px;
-	right: 16px;
+	bottom: -16px;
+	right: -16px;
 	background-color: #f4f4f4;
 	opacity: 0.5;
 	filter: blur(0.5px);
