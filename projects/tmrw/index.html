@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>tmrw</title>
+
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css@8.0.1/normalize.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Doppio+One|Open+Sans" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/libs/weather-icons/css/weather-icons.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/style.css"/>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+
+    <body>
+        <div id="cards">
+            <div id="timestamp" class="card card-transparent">
+                <div id="timestamp-tomorrow">Tomorrow,</div>
+                <div id="timestamp-date">Tuesday, April 23</div>
+            </div>
+
+            <div id="weather" class="card clearfix">
+                <div class="card-background"></div>
+                <div id="weather-details" class="box-two-thirds">
+                    <div class="card-line"><i class="wi wi-fw wi-sunrise pad-rt-lt"></i> 5:37 am sunrise</div>
+                    <div class="card-line"><i class="wi wi-fw wi-raindrop pad-rt-lt"></i> 23% chance of rain by 3:23 pm</div>
+                    <div class="card-line"><i class="wi wi-fw wi-wind-beaufort-4 pad-rt-lt"></i>fairly windy</div>
+                    <div class="card-line"><i class="wi wi-fw wi-sunset pad-rt-lt"></i> 8:46 pm sunset</div>
+                </div>
+                <div id="weather-main" class="box-one-third">
+                    <div id="weather-main-icon"><i class="wi wi-day-haze"></i></div>
+                    <div id="weather-main-high"><span class="fw-med align-lft">78<i class="wi wi-degrees"></i></span><span class="fw-med align-lft">high</span></div>
+                    <div id="weather-main-low"><span class="fw-med align-lft">46<i class="wi wi-degrees"></i></span><span class="fw-med align-lft">low</span></div>
+                </div>
+            </div>
+
+            <div id="calendar" class="card">
+                <div class="card-background"></div>
+                <div id="calendar-intro">You're day starts at 6:30 am.</div>
+                <div class="card-line clearfix"><div class="box-one-third">6:30 - 8:00</div><div class="box-two-thirds">Personal Time</div></div>
+                <div class="card-line clearfix"><div class="box-one-third">10:30 - 11:00</div><div class="box-two-thirds">Standup</div></div>
+                <div class="card-line clearfix"><div class="box-one-third">2:00 - 3:00</div><div class="box-two-thirds">Backlog Grooming</div></div>
+            </div>
+        </div>
+        
+        <div id="footer" class="clearfix">
+            <div class="box-one-third"><img src="res/tmrw.svg" id="footer-logo"/></div>
+            <div class="box-two-thirds" id="footer-copyright">Copyright &copy; 2019 Luke Hollenback</div>
+        </div>
+    </body>
+</html>
