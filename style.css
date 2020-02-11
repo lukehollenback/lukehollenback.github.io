@@ -1,20 +1,18 @@
-/**
- * Color Scheme: Muted Tones
- *  - Pale Gold:    #c0b283
- *  - Silk:         #dcd0c0
- *  - Paper:        #f4f4f4
- *  - Charcoal:     #373737
- */
+:root {
+     --bg-color: #EFEFEF;
+     --fg-color: #2E2E2E;
+     --accent-color: #C0B283;
+ }
 
 body {
-    background-color: #f4f4f4;
-    color: #373737;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
     font-family: 'Open Sans', sans-serif;
 }
 
 a {
     display: inline-block;
-    color: #373737;
+    color: var(--fg-color);
     text-decoration: none;
 
     -webkit-animation: faderegular 0.5s;
@@ -50,8 +48,8 @@ a:hover {
 
 #name {
     display: inline-block;
-    background-color: #373737;
-    color: #f4f4f4;
+    background-color: var(--fg-color);
+    color: var(--bg-color);
     text-align: center;
     border-radius: 100%;
     padding-top: 23%;
@@ -79,7 +77,7 @@ a:hover {
     width: 50%;
     margin-bottom: 1vh;
     padding-left: 1%;
-    border-left: 8px solid #373737;
+    border-left: 8px solid var(--fg-color);
     border-radius: 4px;
 }
 
@@ -201,51 +199,51 @@ a:hover {
 }
 
 @keyframes fadebold {
-    from { font-weight: normal; color: #373737; }
-    to   { font-weight: bold; color: #c0b283; }
+    from { font-weight: normal; color: var(--fg-color); }
+    to   { font-weight: bold; color: var(--accent-color); }
 }
 
 @-moz-keyframes fadebold {
-    from { font-weight: normal; color: #373737 }
-    to   { font-weight: bold; color: #c0b283;}
+    from { font-weight: normal; color: var(--fg-color) }
+    to   { font-weight: bold; color: var(--accent-color);}
 }
 
 @-webkit-keyframes fadebold {
-    from { font-weight: normal; color: #373737; }
-    to   { font-weight: bold; color: #c0b283; }
+    from { font-weight: normal; color: var(--fg-color); }
+    to   { font-weight: bold; color: var(--accent-color); }
 }
 
 @-ms-keyframes fadebold {
-    from { font-weight: normal; color: #373737; }
-    to   { font-weight: bold; color: #c0b283; }
+    from { font-weight: normal; color: var(--fg-color); }
+    to   { font-weight: bold; color: var(--accent-color); }
 }
 
 @-o-keyframes fadebold {
-    from { font-weight: normal; color: #373737; }
-    to   { font-weight: bold; color: #c0b283; }
+    from { font-weight: normal; color: var(--fg-color); }
+    to   { font-weight: bold; color: var(--accent-color); }
 }
 
 @keyframes faderegular {
-    from { font-weight: bold; color: #c0b283; }
-    to   { font-weight: normal; color: #373737; }
+    from { font-weight: bold; color: var(--accent-color); }
+    to   { font-weight: normal; color: var(--fg-color); }
 }
 
 @-moz-keyframes faderegular {
-    from { font-weight: bold; color: #c0b283;}
-    to   { font-weight: normal; color: #373737 }
+    from { font-weight: bold; color: var(--accent-color);}
+    to   { font-weight: normal; color: var(--fg-color) }
 }
 
 @-webkit-keyframes faderegular {
-    from { font-weight: bold; color: #c0b283; }
-    to   { font-weight: normal; color: #373737; }
+    from { font-weight: bold; color: var(--accent-color); }
+    to   { font-weight: normal; color: var(--fg-color); }
 }
 
 @-ms-keyframes faderegular {
-    from { font-weight: bold; color: #c0b283; }
-    to   { font-weight: normal; color: #373737; }
+    from { font-weight: bold; color: var(--accent-color); }
+    to   { font-weight: normal; color: var(--fg-color); }
 }
 
 @-o-keyframes faderegular {
-    from { font-weight: bold; color: #c0b283; }
-    to   { font-weight: normal; color: #373737; }
+    from { font-weight: bold; color: var(--accent-color); }
+    to   { font-weight: normal; color: var(--fg-color); }
 }
