@@ -1,0 +1,286 @@
+@import url('./root.css');
+
+body {
+    color: var(--color-black);
+    background-color: var(--color-white);
+}
+
+a {
+    display: inline-block;
+    color: var(--color-primary);
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+}
+
+#fixed-nav-row {
+    user-select: none;
+    z-index: 100;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: var(--fixed-nav-height);
+    padding: var(--fixed-nav-vertical-space) var(--fixed-nav-horizontal-space) var(--fixed-nav-vertical-space) var(--fixed-nav-horizontal-space);
+    background: var(--color-white);
+    opacity: var(--fixed-nav-opacity);
+}
+
+#fixed-nav-row > .columns {
+    height: inherit;
+    line-height: var(--fixed-nav-height);
+    vertical-align: middle;
+}
+
+#cp-nav-links {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+#cp-nav-links > li > a {
+    text-decoration: none;
+    font-weight: 500;
+    color: var(--color-white);
+}
+
+#cp-nav-links > li > a:hover {
+    text-decoration: underline;
+}
+
+#fixed-nav-links {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: 0;
+}
+
+#fixed-nav-link {
+    position: relative;
+    float: left;
+    margin-bottom: 0;
+    margin-right: 2rem;
+}
+
+#fixed-nav-link > a {
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: .2rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-black);
+}
+
+#fixed-nav-link > a:hover {
+    color: var(--color-primary);
+}
+
+#fixed-nav-hamburger {
+    font-size: 2rem;
+    text-align: right;
+}
+
+#fixed-nav-spacer {
+    height: var(--fixed-nav-height);
+    margin-top: var(--fixed-nav-vertical-space);
+    margin-bottom: var(--fixed-nav-vertical-space);
+}
+
+#call-to-action-content {
+    padding-top: 20vh;
+    padding-bottom: 20vh;
+}
+
+#scrolling-target {
+    opacity: 0;
+    animation-name: scrolling-target-animation;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes scrolling-target-animation {
+    0%   { opacity: 0; }
+    10%  { opacity: 0; }
+    50%  { opacity: 1; }
+    90%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+#footer-row {
+    user-select: none;
+    margin-bottom: 2em;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+#logo-fixed-nav {
+    width: auto;
+    height: var(--fixed-nav-height);
+    pointer-events: none;
+}
+
+#malicious-warning-container {
+    margin-top: 20vh;
+}
+
+.section-title {
+    margin-bottom: 4rem;
+    font-weight: 500;
+}
+
+.wide-primary-wrapper a {
+    color: var(--color-white);
+}
+
+.wide-primary-wrapper {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.wide-primary-wrapper-wave {
+    height: 64px;
+    overflow: hidden;
+}
+
+.wide-primary-wrapper-wave > svg {
+    height: 100%;
+    width: 100%;
+}
+
+.wide-primary-wrapper-wave > svg > path {
+    stroke: none;
+    fill: var(--color-primary);
+}
+
+.card {
+    background-color: var(--color-white);
+    color: var(--color-black);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    min-height: 228px;
+}
+
+/**
+ * Skeleton CSS Overrides & Extensions.
+ *
+ * These are modifications of existing Skeleton CSS classes in order to bring them in line with the
+ * branding and theme of this web app.
+ */
+input:focus {
+    border-color: var(--color-primary) !important;
+}
+
+.button-primary {
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.button:hover, .button-primary:hover {
+    filter: brightness(90%) !important;
+}
+
+.button {
+    background-color: var(--color-white) !important;
+}
+
+/**
+ * Utility Classes.
+ *
+ * These are generic classes that can be applied to practically any element. These augment the
+ * utility classes already provided by the Skeleton CSS framework.
+ */
+.u-light {
+    background-color: var(--color-white) !important;
+    color: var(--color-black) !important;
+    border-color: var(--color-white) !important;
+}
+
+.u-primary {
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.u-dark {
+    background-color: var(--color-black) !important;
+    color: var(--color-white) !important;
+    border-color: var(--color-black) !important;
+}
+
+.u-dark.button:hover, .u-dark.button-primary:hover {
+    filter: brightness(75%) !important;
+}
+
+.u-black-text {
+    color: var(--color-black) !important;
+}
+
+.u-transparent-border {
+    border-color: transparent !important;
+}
+
+.u-no-select {
+    user-select: none !important;
+}
+
+.u-pixel-art {
+    image-rendering: pixelated !important;
+}
+
+.u-24px {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* Mobile-Only Styles.
+ *
+ * This is a mobile-first webstie. As such, most styles that apply to mobile devices (screens
+ * smaller than a phablet) should NOT be specified in this block – it only exists for some special
+ * cases to simplify logic.
+ */
+ @media (max-width: 550px) {
+
+    .u-desktop-only {
+        display: none !important;
+    }
+
+}
+
+
+/* Desktop-Only Styles.
+ *
+ * The styles inside of this block can be described as targetting screens that are larger than a
+ * phablet. The Skeleton CSS framework's grid breaks at 550px by default.
+ */
+@media (min-width: 550px) {
+
+    #login-container {
+        /* NOTE: We set the maximum width of this specific container to half of the maximum width of a
+            normal Skeleton CSS container (960px). */
+        max-width: 480px;
+    }
+
+    #malicious-warning-container {
+        margin-top: 37.5vh;
+        /* NOTE: We set the maximum width of this specific container to 3/4ths of the maximum width
+            of a normal Skeleton CSS container (960px). */
+        max-width: 720px;
+    }
+
+    #call-to-action-content {
+        padding-top: 30vh;
+        padding-bottom: 40vh;
+    }
+
+    .card {
+        min-height: 284px;
+    }
+
+    .u-mobile-only {
+        display: none !important;
+    }
+
+}

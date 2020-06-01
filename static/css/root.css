@@ -1,0 +1,26 @@
+/**
+ * Web Font Imports.
+ *
+ * NOTE: We need to explicitly import the exact font weights that we plan to use. The less that we
+ *  import, the faster initial page load times will be. If we do not import an explicit font weight,
+ *  browsers will try to simulate it if/when used (this often results in awful looking text).
+ */
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,600&display=swap');
+
+/**
+ * Site-Wide Style Variables.
+ */
+:root {
+    --color-black:                  #222222;
+    --color-white:                  #FEFEFE;
+    --color-primary:                #222222/*#ECA72C*/;
+    --color-primary-light:          #F2C373;
+    --color-primary-dark:           #BB7D11;
+
+    --angle-slash:                  -22deg;
+
+    --fixed-nav-opacity:            1.0;
+    --fixed-nav-height:             48px;
+    --fixed-nav-vertical-space:     8px;
+    --fixed-nav-horizontal-space:   32px;
+}
