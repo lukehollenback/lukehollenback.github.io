@@ -33,22 +33,6 @@ a:hover {
     vertical-align: middle;
 }
 
-#cp-nav-links {
-    display: inline-block;
-    list-style: none;
-    margin-bottom: 0;
-}
-
-#cp-nav-links > li > a {
-    text-decoration: none;
-    font-weight: 500;
-    color: var(--color-white);
-}
-
-#cp-nav-links > li > a:hover {
-    text-decoration: underline;
-}
-
 #fixed-nav-links {
     display: inline-block;
     list-style: none;
@@ -122,10 +106,6 @@ a:hover {
     width: auto;
     height: var(--fixed-nav-height);
     pointer-events: none;
-}
-
-#malicious-warning-container {
-    margin-top: 20vh;
 }
 
 .section-title {
