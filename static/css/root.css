@@ -13,9 +13,9 @@
 :root {
     --color-black:                  #222222;
     --color-white:                  #FEFEFE;
-    --color-primary:                #222222/*#ECA72C*/;
-    --color-primary-light:          #F2C373;
-    --color-primary-dark:           #BB7D11;
+    --color-primary:                #222222;
+    --color-primary-light:          #333333;
+    --color-primary-dark:           #111111;
 
     --angle-slash:                  -22deg;
 

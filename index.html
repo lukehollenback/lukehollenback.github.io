@@ -25,8 +25,8 @@
                         <img src='./static/images/logo.svg'/>
                     </object></a>
 
-                    <div class='u-pull-right u-mobile-only' id='fixed-nav-hamburger'>
-                        <i class='fa fa-bars' aria-hidden='true'></i>
+                    <div class='u-pull-right u-mobile-only u-no-select' id='fixed-nav-hamburger' onclick='menuToggle()'>
+                        <i class='fa fa-bars' id='fixed-nav-hamburger-icon' aria-hidden='true'></i>
                     </div>
 
                     <ul class='u-pull-right u-desktop-only' id='fixed-nav-links'>
@@ -426,6 +426,26 @@
                 },
                 false
             );
+        </script>
+
+        <!-- Mobile Hamburger Menu Action -->
+        <script type='text/javascript'>
+            let menuElem = document.getElementById('dynamic-nav-section');
+            let menuIconElem = document.getElementById('fixed-nav-hamburger-icon');
+            let menuState = false;
+            let menuToggle = function() {
+                if (menuState) {
+                    menuElem.style.display = 'none';
+                    menuIconElem.classList.remove('fa-times');
+                    menuIconElem.classList.add('fa-bars');
+                    menuState = false;
+                } else {
+                    menuElem.style.display = 'block';
+                    menuIconElem.classList.remove('fa-bars');
+                    menuIconElem.classList.add('fa-times');
+                    menuState = true;
+                }
+            }
         </script>
     </body> <!-- The content of the webpage exists above here... -->
 

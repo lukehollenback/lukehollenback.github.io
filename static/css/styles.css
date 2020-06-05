@@ -46,17 +46,13 @@ a:hover {
     margin-right: 2rem;
 }
 
-#fixed-nav-link > a {
+#fixed-nav-link a {
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: .2rem;
     font-size: 1.25rem;
     font-weight: 500;
     color: var(--color-black);
-}
-
-#fixed-nav-link > a:hover {
-    color: var(--color-primary);
 }
 
 #fixed-nav-hamburger {
@@ -68,6 +64,27 @@ a:hover {
     height: var(--fixed-nav-height);
     margin-top: var(--fixed-nav-vertical-space);
     margin-bottom: var(--fixed-nav-vertical-space);
+}
+
+#dynamic-nav-section {
+    display: none;
+    text-transform: uppercase;
+    letter-spacing: .2rem;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+#dynamic-nav-section a {
+    text-decoration: none;
+}
+
+#dynamic-nav-section div {
+    margin-bottom: 2rem;
+}
+
+#dynamic-nav-social-links {
+    padding-top: 2rem;
+    border-top: 0.33rem solid var(--color-black)
 }
 
 #dynamic-nav-social-links {
@@ -218,6 +235,7 @@ input:focus {
 
 .u-no-select {
     user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 .u-pixel-art {
