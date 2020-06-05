@@ -70,6 +70,16 @@ a:hover {
     margin-bottom: var(--fixed-nav-vertical-space);
 }
 
+#dynamic-nav-social-links {
+    text-align: center;
+}
+
+#dynamic-nav-social-links a {
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+}
+
 #call-to-action-content {
     padding-top: 20vh;
     padding-bottom: 30vh;

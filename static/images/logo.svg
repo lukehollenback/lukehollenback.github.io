@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type='text/css' href='../css/styles.css'?>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -86,13 +87,13 @@
        cy="16.981228"
        cx="14.994786"
        id="path891"
-       style="fill:#222222;fill-opacity:1;stroke-width:0.264583" />
+       style="fill:var(--color-primary);fill-opacity:1;stroke-width:0.264583" />
     <circle
        r="2.3769798"
        cy="28.959526"
        cx="30.883799"
        id="path893"
-       style="fill:#222222;fill-opacity:1;stroke-width:0.264583" />
+       style="fill:var(--color-primary);fill-opacity:1;stroke-width:0.264583" />
   </g>
   <g
      inkscape:label="Letters"
@@ -107,7 +108,7 @@
          x="6.0449219"
          y="38.274375"><tspan
            dx="0 5.7684693"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.87778px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#fefefe;fill-opacity:1">LH</tspan></tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.87778px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:var(--color-white);fill-opacity:1">LH</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:15.5311px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.388278"
@@ -118,6 +119,6 @@
          id="tspan855"
          x="4.8859434"
          y="22.421228"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:Raleway;-inkscape-font-specification:'Raleway Semi-Bold';fill:#fefefe;fill-opacity:1;stroke-width:0.388278">LH</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:Raleway;-inkscape-font-specification:'Raleway Semi-Bold';fill:var(--color-white);fill-opacity:1;stroke-width:0.388278">LH</tspan></text>
   </g>
 </svg>
