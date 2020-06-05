@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?xml-stylesheet type='text/css' href='../css/styles.css'?>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -14,7 +13,10 @@
    version="1.1"
    viewBox="0 0 33.866667 33.866667"
    height="128"
-   width="128">
+   width="128"
+   inkscape:export-filename="/Users/lukehollenback/Desktop/banner-1200.png"
+   inkscape:export-xdpi="900.00006"
+   inkscape:export-ydpi="900.00006">
   <defs
      id="defs2">
     <rect
@@ -26,7 +28,7 @@
   </defs>
   <sodipodi:namedview
      inkscape:window-maximized="0"
-     inkscape:window-y="94"
+     inkscape:window-y="50"
      inkscape:window-x="446"
      inkscape:window-height="943"
      inkscape:window-width="1252"
@@ -108,10 +110,10 @@
          x="6.0449219"
          y="38.274375"><tspan
            dx="0 5.7684693"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.87778px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:var(--color-white);fill-opacity:1">LH</tspan></tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.87778px;font-family:Raleway;-inkscape-font-specification:Raleway;fill-opacity:1">LH</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:15.5311px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.388278"
+       style="font-style:normal;font-weight:normal;font-size:15.53110000000000035px;line-height:1.25;font-family:sans-serif;fill:#fefefe;fill-opacity:1;stroke:none;stroke-width:0.388278;"
        x="4.8859434"
        y="22.421228"
        id="text857"><tspan
@@ -119,6 +121,6 @@
          id="tspan855"
          x="4.8859434"
          y="22.421228"
-         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:Raleway;-inkscape-font-specification:'Raleway Semi-Bold';fill:var(--color-white);fill-opacity:1;stroke-width:0.388278">LH</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:Raleway;-inkscape-font-specification:'Raleway Semi-Bold';fill-opacity:1;stroke-width:0.388278;fill:#fefefe;">LH</tspan></text>
   </g>
 </svg>
