@@ -23,4 +23,9 @@
     --fixed-nav-height:             48px;
     --fixed-nav-vertical-space:     8px;
     --fixed-nav-horizontal-space:   32px;
+
+    --one-space:                    4px;
+    --two-spaces:                   8px;
+    --four-spaces:                  16px;
+    --eight-spaces:                 32px;
 }
