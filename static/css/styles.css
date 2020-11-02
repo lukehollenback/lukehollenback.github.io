@@ -22,13 +22,17 @@ blockquote {
     margin-right: var(--eight-spaces);
 }
 
-#fixed-nav-row {
-    user-select: none;
-    z-index: 100;
+#nav {
     position: fixed;
+    z-index: 100;
     top: 0px;
     left: 0px;
     right: 0px;
+    padding: 0;
+    margin: 0;
+}
+
+#fixed-nav-row {
     height: var(--fixed-nav-height);
     padding: var(--fixed-nav-vertical-space) var(--fixed-nav-horizontal-space) var(--fixed-nav-vertical-space) var(--fixed-nav-horizontal-space);
     background: var(--color-white);
@@ -70,12 +74,13 @@ blockquote {
 
 #fixed-nav-spacer {
     height: var(--fixed-nav-height);
-    margin-top: var(--fixed-nav-vertical-space);
-    margin-bottom: var(--fixed-nav-vertical-space);
+    background-color: var(--color-white);
 }
 
 #dynamic-nav-section {
     display: none;
+    padding: 0 2rem 0 2rem;
+    background-color: var(--color-white);
     text-transform: uppercase;
     letter-spacing: .2rem;
     font-size: 2rem;
@@ -92,7 +97,6 @@ blockquote {
 
 #dynamic-nav-social-links {
     padding-top: 2rem;
-    border-top: 0.33rem solid var(--color-black)
 }
 
 #dynamic-nav-social-links {
@@ -101,12 +105,12 @@ blockquote {
 
 #dynamic-nav-social-links a {
     display: inline-block;
-    width: 20%;
+    width: 15%;
     text-align: center;
 }
 
 #call-to-action-content {
-    padding-top: 20vh;
+    padding-top: 35vh;
     padding-bottom: 40vh;
 }
 
@@ -157,19 +161,29 @@ blockquote {
     color: var(--color-white);
 }
 
-.wide-primary-wrapper-wave {
+.wide-wrapper-wave {
+    width: 100%;
     height: 64px;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
-.wide-primary-wrapper-wave > svg {
+.wide-wrapper-wave > svg {
     height: 100%;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.wide-primary-wrapper-wave > svg > path {
+.wide-wrapper-wave > svg > path {
     stroke: none;
     fill: var(--color-primary);
+}
+
+.svg-light svg > path {
+    stroke: none;
+    fill: var(--color-white);
 }
 
 .card {
@@ -291,7 +305,7 @@ input:focus {
     }
 
     #call-to-action-content {
-        padding-top: 30vh;
+        padding-top: 40vh;
         padding-bottom: 40vh;
     }
 
