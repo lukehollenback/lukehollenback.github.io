@@ -191,7 +191,7 @@ blockquote {
     color: var(--color-black);
     border-radius: 8px;
     padding: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 4%;
     min-height: 228px;
 }
 
@@ -267,6 +267,16 @@ input:focus {
 .u-24px {
     width: 24px !important;
     height: 24px !important;
+}
+
+.u-bump-up {
+    position: relative;
+    top: -2px;
+}
+
+.u-bump-down {
+    position: relative;
+    top: 2px;
 }
 
 /* Mobile-Only Styles.
