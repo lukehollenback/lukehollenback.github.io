@@ -8,10 +8,13 @@ body {
 a {
     display: inline-block;
     color: var(--color-primary);
+    text-decoration-line: underline;
+    text-decoration-style: solid;
 }
 
 a:hover {
-    color: var(--color-primary-dark);
+    text-decoration-line: underline;
+    text-decoration-style: double;
 }
 
 blockquote {
@@ -194,6 +197,24 @@ blockquote {
     margin-bottom: 4%;
     min-height: 228px;
 }
+
+.card a {
+    color: var(--color-primary)
+}
+
+.card-heading {
+    margin-bottom: 2rem;
+}
+
+.card-heading > h5 {
+    margin-bottom: 0;
+}
+
+.card-heading > h6 {
+    margin-bottom: 0;
+    font-style: italic;
+}
+
 
 /**
  * Skeleton CSS Overrides & Extensions.
