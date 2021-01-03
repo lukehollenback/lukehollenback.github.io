@@ -13,6 +13,8 @@ a {
 }
 
 a:hover {
+    filter: brightness(90%);
+    color: var(--color-primary);
     text-decoration-line: underline;
     text-decoration-style: double;
 }
@@ -199,7 +201,7 @@ blockquote {
 }
 
 .card a {
-    color: var(--color-primary)
+    color: var(--color-primary);
 }
 
 .card-heading {
@@ -226,14 +228,19 @@ input:focus {
     border-color: var(--color-primary) !important;
 }
 
+input[type=button] {
+    border: none;
+}
+
 .button-primary {
     background-color: var(--color-primary) !important;
     color: var(--color-white) !important;
-    border-color: var(--color-primary) !important;
 }
 
 .button:hover, .button-primary:hover {
     filter: brightness(90%) !important;
+    text-decoration-line: underline;
+    text-decoration-style: double;
 }
 
 .button {
@@ -258,24 +265,6 @@ input:focus {
     border-color: var(--color-primary) !important;
 }
 
-.u-dark {
-    background-color: var(--color-black) !important;
-    color: var(--color-white) !important;
-    border-color: var(--color-black) !important;
-}
-
-.u-dark.button:hover, .u-dark.button-primary:hover {
-    filter: brightness(75%) !important;
-}
-
-.u-black-text {
-    color: var(--color-black) !important;
-}
-
-.u-transparent-border {
-    border-color: transparent !important;
-}
-
 .u-no-select {
     user-select: none !important;
     -webkit-tap-highlight-color: transparent !important;
@@ -283,11 +272,6 @@ input:focus {
 
 .u-pixel-art {
     image-rendering: pixelated !important;
-}
-
-.u-24px {
-    width: 24px !important;
-    height: 24px !important;
 }
 
 .u-bump-up {
@@ -321,19 +305,6 @@ input:focus {
  * phablet. The Skeleton CSS framework's grid breaks at 550px by default.
  */
 @media (min-width: 550px) {
-
-    #login-container {
-        /* NOTE: We set the maximum width of this specific container to half of the maximum width of a
-            normal Skeleton CSS container (960px). */
-        max-width: 480px;
-    }
-
-    #malicious-warning-container {
-        margin-top: 37.5vh;
-        /* NOTE: We set the maximum width of this specific container to 3/4ths of the maximum width
-            of a normal Skeleton CSS container (960px). */
-        max-width: 720px;
-    }
 
     #call-to-action-content {
         padding-top: 40vh;
