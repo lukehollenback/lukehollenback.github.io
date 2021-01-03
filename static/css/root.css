@@ -16,6 +16,15 @@
     --color-primary:                #222222;
     --color-primary-light:          #333333;
     --color-primary-dark:           #111111;
+    
+    --color-yellow: #FEFBE2;
+    --color-green: #E5FCE3;
+    --color-red: #FBE1E9;
+    --color-blue: #E3F4FE;
+
+    --gradient-yellow-red: linear-gradient(var(--color-yellow), var(--color-red));
+    --gradient-green-blue: linear-gradient(var(--color-green), var(--color-blue));
+
 
     --angle-slash:                  -22deg;
 
