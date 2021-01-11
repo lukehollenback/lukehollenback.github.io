@@ -50,20 +50,26 @@ blockquote {
     vertical-align: middle;
 }
 
+.fixed-nav-links {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: 0;
+}
+
 #fixed-nav-links {
     display: inline-block;
     list-style: none;
     margin-bottom: 0;
 }
 
-#fixed-nav-link {
+.fixed-nav-link {
     position: relative;
     float: left;
     margin-bottom: 0;
     margin-right: 2rem;
 }
 
-#fixed-nav-link a {
+.fixed-nav-link a {
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: .2rem;
@@ -110,7 +116,7 @@ blockquote {
 
 #dynamic-nav-social-links a {
     display: inline-block;
-    width: 15%;
+    width: 10%;
     text-align: center;
 }
 
@@ -282,6 +288,10 @@ input[type=button] {
 .u-bump-down {
     position: relative;
     top: 2px;
+}
+
+.u-hidden {
+    display: none;
 }
 
 /* Mobile-Only Styles.
