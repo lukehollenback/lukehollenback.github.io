@@ -230,11 +230,11 @@ blockquote {
  * These are modifications of existing Skeleton CSS classes in order to bring them in line with the
  * branding and theme of this web app.
  */
-input:focus {
+input:focus, button:focus {
     border-color: var(--color-primary) !important;
 }
 
-input[type=button] {
+input[type=button], button {
     border: none;
 }
 
