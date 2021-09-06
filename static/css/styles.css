@@ -292,6 +292,10 @@ input[type=button], button {
     display: none;
 }
 
+.u-round-border {
+    border-radius: 4px;
+}
+
 /* Mobile-Only Styles.
  *
  * This is a mobile-first webstie. As such, most styles that apply to mobile devices (screens
