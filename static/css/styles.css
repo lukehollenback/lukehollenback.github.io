@@ -245,8 +245,6 @@ input[type=button], button {
 
 .button:hover, .button-primary:hover {
     filter: brightness(90%) !important;
-    text-decoration-line: underline;
-    text-decoration-style: double;
 }
 
 .button {
