@@ -284,6 +284,11 @@ input[type=button], button {
     color: var(--color-itch);
 }
 
+.u-linkedin {
+    background-color: var(--color-linkedin) !important;
+    color: var(--color-linkedin);
+}
+
 .u-no-select {
     user-select: none !important;
     -webkit-tap-highlight-color: transparent !important;
