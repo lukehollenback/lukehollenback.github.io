@@ -269,6 +269,21 @@ input[type=button], button {
     border-color: var(--color-primary) !important;
 }
 
+.u-twitter {
+    background-color: var(--color-twitter) !important;
+    color: var(--color-white);
+}
+
+.u-discord {
+    background-color: var(--color-discord) !important;
+    color: var(--color-discord);
+}
+
+.u-itch {
+    background-color: var(--color-itch) !important;
+    color: var(--color-itch);
+}
+
 .u-no-select {
     user-select: none !important;
     -webkit-tap-highlight-color: transparent !important;
