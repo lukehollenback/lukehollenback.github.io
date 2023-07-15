@@ -197,6 +197,11 @@ blockquote {
     fill: var(--color-white);
 }
 
+.svg-dark svg > path {
+    stroke: none;
+    fill: var(--color-primary);
+}
+
 .card {
     background-color: var(--color-white);
     color: var(--color-black);
