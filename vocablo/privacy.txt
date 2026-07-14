@@ -1,0 +1,8 @@
+Vocablo Privacy Policy
+Effective July 12, 2026
+
+• Vocablo collects no data.
+• No accounts, no tracking. Vocablo has no sign-up, no analytics, no advertising, and no third-party SDKs. The app makes no network requests to us — we don't operate any servers.
+• Your data stays yours. Your learning progress, settings, and practice history are stored on your device. If you subscribe to Vocablo Plus, that data also syncs between your devices through your personal iCloud account. It is never visible to us.
+• Conversation practice and other AI-powered features run directly on your device using on-device models. Your conversations are never visible to us.
+• Purchases are handled by Apple. Subscriptions are processed entirely through the App Store. We never see your payment information.
