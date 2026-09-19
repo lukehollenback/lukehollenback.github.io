@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { PERSON_JSON_LD, SITE } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Overrides the page's own URL, for content whose original lives elsewhere. */
+  canonicalUrl?: string;
+  publishedTime?: Date;
+  /** Structured data for this page, emitted alongside the site-wide Person block. */
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description, canonicalUrl, publishedTime, jsonLd } = Astro.props;
+
+// build.format 'file' puts '.html' on Astro.url; the public URL has none.
+const pagePath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
+const canonical = canonicalUrl ?? new URL(pagePath, Astro.site).href;
+const structuredData = jsonLd ? [PERSON_JSON_LD, jsonLd] : [PERSON_JSON_LD];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content={publishedTime ? 'article' : 'website'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    {structuredData.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
+
+    <!-- Inline so a pinned theme applies before first paint. Key must match THEME_STORAGE_KEY. -->
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem('lh-theme');
+        if (stored === 'light' || stored === 'dark') document.documentElement.dataset.theme = stored;
+      } catch {
+        // Storage is blocked: fall through to the system preference.
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader />
+    <slot />
+    <SiteFooter />
+  </body>
+</html>

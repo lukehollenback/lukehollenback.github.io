@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const timeline = [
+  { years: '2026 — Present', role: 'Independent Consultant', org: 'Product, engineering, and AI advisory for founders.' },
+  { years: '2025 — Present', role: 'Vice President of Product Development', org: 'Nextworld · Leading the creation of an AI-native enterprise platform.' },
+  { years: '2018 — 2025', role: 'Engineering & Product Leadership', org: 'Nextworld · Built the platform layer — a real-time cubing engine, a constraint planning system, a no-code ML workbench. Three patent filings.' },
+  { years: '2015 — 2018', role: 'Software Engineer', org: 'Astronics Ballard Technology · Embedded avionics platforms.' },
+  { years: '2013 — 2017', role: 'B.S. Computer Science', org: 'Seattle Pacific University · Focus on machine learning research.' },
+];
+
+const patents = [
+  { title: 'Realtime Data Summarization and Aggregation with Cubes', number: 'US12505084B2 · Granted', href: 'https://patents.google.com/patent/US12505084B2/en' },
+  { title: 'Building and Executing Machine Learning Models via a No-Code Toolkit', number: 'US20240220910A1', href: 'https://patents.google.com/patent/US20240220910A1/en' },
+  { title: 'Metadata-Driven Constraint Planning Engine', number: 'US20210248531A1', href: 'https://patents.google.com/patent/US20210248531A1/en' },
+];
+---
+
+<BaseLayout
+  title="Bio — Luke Hollenback"
+  description="From embedded avionics to running product development at Nextworld: twelve years of engineering and product leadership, a no-code platform, an AI-native evolution, and three patent filings."
+>
+  <main id="main" class="page">
+    <div class="bio-inner split">
+      <div>
+        <h1 class="page-title">I like problems bigger than code.</h1>
+        <div class="story">
+          <p>
+            I started in avionics, writing embedded software that had to work every time. Standards compliance,
+            real-time constraints, and a certification process that created shelves full of paperwork.
+            <span class="highlight">I learned to design for the failure case first.</span>
+          </p>
+          <p>
+            After a few consulting projects in the fintech and non-profit sectors, I moved on to Nextworld, a
+            Denver-area startup. I've spent most of my career here building a no-code development platform that
+            abstracts the hardest technical concepts for citizen developers with real business problems.
+          </p>
+          <p>
+            I came up through that organization, from engineer to senior director. Now I run product development as
+            VP.&nbsp;<span class="highlight">I set the direction for Nextworld's AI-native evolution and shipped it</span>.
+            Our Agentic Development product — an agentic software shop that builds enterprise-grade applications — was
+            my call, and it took convincing Nextworld's founders to jump.
+          </p>
+          <p>
+            But <span class="highlight">some machines are made of people, not code</span>. I've run an organization at
+            70 people and at 12. I've led teams through awkward sizes, painful eras, AI-induced identity crises, tight
+            market-driven deadlines, and exciting launches. I can coach a team and roll up my own sleeves. I've hired
+            well and badly, and I know where to focus my energy and when to trust my leaders.
+          </p>
+          <p>
+            I work with founders directly. Often they have a working product and a roadmap they don't trust, or an AI
+            initiative that needs someone to say out loud whether it's real.
+            <span class="highlight">I'm at my best early, when the vision is still blurry.</span>
+          </p>
+        </div>
+      </div>
+      <aside>
+        <p class="eyebrow aside-label">Résumé</p>
+        {
+          timeline.map((job) => (
+            <div class="job hairline-top">
+              <p class="job-years">{job.years}</p>
+              <p class="job-role">{job.role}</p>
+              <p class="job-org">{job.org}</p>
+            </div>
+          ))
+        }
+        <div class="patents hairline-top">
+          <p class="eyebrow aside-label">Patent Filings</p>
+          {
+            patents.map((patent) => (
+              <a class="patent" href={patent.href} target="_blank" rel="noopener">
+                {patent.title}
+                <span class="patent-number">{patent.number}</span>
+              </a>
+            ))
+          }
+        </div>
+      </aside>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .bio-inner {
+    --split-min: 320px;
+    max-width: 1120px;
+    margin: 0 auto;
+    gap: clamp(32px, 6vw, 88px);
+  }
+
+  .page-title {
+    max-width: 24ch;
+    margin-bottom: 28px;
+  }
+
+  .story {
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.68;
+    color: var(--body);
+  }
+
+  .story p {
+    margin: 0 0 18px;
+  }
+
+  .story p:last-child {
+    margin-bottom: 0;
+  }
+
+  .aside-label {
+    margin-bottom: 10px;
+    font-size: 12.5px;
+  }
+
+  .job {
+    padding: 15px 0 14px;
+  }
+
+  .job-years {
+    margin: 0 0 5px;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
+  .job-role {
+    margin: 0 0 3px;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+  }
+
+  .job-org {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .patents {
+    margin-top: 2px;
+    padding-top: 16px;
+  }
+
+  .patent {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--body);
+  }
+
+  .patent:hover {
+    color: var(--link);
+  }
+
+  .patent-number {
+    display: block;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+</style>

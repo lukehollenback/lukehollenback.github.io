@@ -1,0 +1,49 @@
+---
+import { SITE } from '../data/site';
+---
+
+<footer class="site-footer hairline-top">
+  <div class="footer-group">
+    <span>{SITE.location}</span>
+    <span class="separator">·</span>
+    <span>{new Date().getFullYear()}</span>
+  </div>
+  <div class="footer-group">
+    <a class="hit-area" href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+    <span class="separator">·</span>
+    <a class="hit-area" href={SITE.github} target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 var(--shell-pad);
+    padding: clamp(13px, 2.4vh, 20px) 0;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
+  .footer-group {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .separator {
+    color: var(--separator);
+  }
+
+  a {
+    color: var(--muted);
+  }
+
+  a:hover {
+    color: var(--link);
+  }
+</style>

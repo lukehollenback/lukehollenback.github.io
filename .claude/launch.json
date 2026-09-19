@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 4321
+    },
+    {
+      "name": "site-with-fixture-articles",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "WRITING_DIR=tests/fixtures/writing npx astro dev --port 4322"],
+      "port": 4322
+    }
+  ]
+}

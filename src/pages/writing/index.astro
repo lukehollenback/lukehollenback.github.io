@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedArticles } from '../../lib/articles';
+import { collectTags, formatMonthYear, pieceCountLabel, sourceNameFor } from '../../lib/writing';
+
+const articles = await getPublishedArticles();
+const tags = collectTags(articles.map((article) => article.data.tags));
+---
+
+<BaseLayout
+  title="Writing — Luke Hollenback"
+  description="Luke Hollenback on platforms, teams, hiring, and where AI actually adds value. Only what has shipped."
+>
+  <main id="main" class="page">
+    <div class="page-inner">
+      <h1 class="page-title">I only write about what I've shipped.</h1>
+      <p class="page-intro">
+        Platforms, teams, hiring, and where AI actually adds value. Some pieces start here; others are mirrored from
+        where they first ran.
+      </p>
+      {
+        tags.length > 0 && (
+          <div class="filters">
+            <button class="chip chip-all" type="button" data-tag-filter="" aria-pressed="true" aria-label="All writing" title="All writing">
+              ∞
+            </button>
+            {tags.map((tag) => (
+              <button class="chip" type="button" data-tag-filter={tag} aria-pressed="false">
+                {tag}
+              </button>
+            ))}
+          </div>
+        )
+      }
+      {
+        articles.map(({ id, data }) => (
+          <a class="entry hairline-top" href={`/writing/${id}`} data-article data-tags={JSON.stringify(data.tags)}>
+            <time class="entry-date" datetime={data.date.toISOString()}>
+              {formatMonthYear(data.date)}
+            </time>
+            <div class="entry-body">
+              <h2>{data.title}</h2>
+              <p class="entry-summary">{data.summary}</p>
+              <div class="entry-tags">
+                {data.tags.map((tag) => <span class="chip">{tag}</span>)}
+                {data.sourceUrl && <span class="entry-source">↗ {sourceNameFor(data.sourceUrl, data.sourceName)}</span>}
+              </div>
+            </div>
+          </a>
+        ))
+      }
+      <div class="count hairline-top" data-article-count aria-live="polite">{pieceCountLabel(articles.length)}</div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  import '../../scripts/tag-filter';
+</script>
+
+<style>
+  .page-title {
+    max-width: 24ch;
+  }
+
+  .page-intro {
+    max-width: 54ch;
+    margin-bottom: clamp(28px, 5vh, 44px);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .entry {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px clamp(14px, 3vw, 40px);
+    margin: 0 -16px;
+    padding: 20px 16px;
+    border-radius: 10px;
+    color: var(--ink);
+  }
+
+  .entry:hover {
+    background-color: var(--surface-hover);
+    color: var(--ink);
+  }
+
+  .entry[hidden] {
+    display: none;
+  }
+
+  .entry-date {
+    flex: 0 0 7.5em;
+    margin-top: 4px;
+    font-size: 12.5px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
+  .entry-body {
+    flex: 1 1 18em;
+    min-width: 0;
+  }
+
+  h2 {
+    margin: 0 0 7px;
+    font-size: clamp(19px, 2.2vw, 25px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.024em;
+  }
+
+  .entry-summary {
+    max-width: 58ch;
+    margin: 0 0 11px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--subtle);
+  }
+
+  .entry-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .entry-source {
+    font-size: 11.5px;
+    letter-spacing: 0.01em;
+    color: var(--link);
+  }
+
+  .count {
+    padding-top: 18px;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+</style>

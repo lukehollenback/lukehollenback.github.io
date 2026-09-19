@@ -1,0 +1,251 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedArticles, type Article } from '../../lib/articles';
+import { SITE } from '../../data/site';
+import { formatMonthYear, readTimeMinutes, sourceNameFor } from '../../lib/writing';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+}
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const { data } = article;
+const { Content } = await render(article);
+const articleUrl = new URL(`/writing/${article.id}`, Astro.site).href;
+
+const blogPostingJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description: data.summary,
+  datePublished: data.date.toISOString(),
+  keywords: data.tags,
+  url: articleUrl,
+  author: { '@type': 'Person', name: SITE.name, url: Astro.site?.href },
+};
+---
+
+<BaseLayout
+  title={`${data.title} — ${SITE.name}`}
+  description={data.summary}
+  canonicalUrl={data.sourceUrl}
+  publishedTime={data.date}
+  jsonLd={blogPostingJsonLd}
+>
+  <main id="main" class="page article-page">
+    <article>
+      <a class="back" href="/writing">← All writing</a>
+      <p class="article-meta">{formatMonthYear(data.date)} · {readTimeMinutes(article.body ?? '')} min read</p>
+      <h1>{data.title}</h1>
+      <p class="summary">{data.summary}</p>
+      {
+        data.sourceUrl && (
+          <a class="source-card" href={data.sourceUrl} target="_blank" rel="noopener">
+            <span class="source-text">
+              <span class="source-label">First published at</span>
+              <span class="source-name">{sourceNameFor(data.sourceUrl, data.sourceName)}</span>
+            </span>
+            <span class="source-arrow">↗</span>
+          </a>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+      <div class="article-footer hairline-top">
+        <div class="article-tags">
+          {data.tags.map((tag) => <span class="chip">{tag}</span>)}
+        </div>
+        <a class="quiet-link" href="/contact">Work with me →</a>
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .article-page {
+    padding-top: clamp(32px, 6vh, 70px);
+  }
+
+  article {
+    max-width: 660px;
+    margin: 0 auto;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: clamp(24px, 5vh, 44px);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+
+  .back:hover {
+    color: var(--link);
+  }
+
+  .article-meta {
+    margin: 0 0 14px;
+    font-size: 12.5px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
+  h1 {
+    margin: 0 0 18px;
+    font-size: clamp(30px, 4.4vw, 46px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.034em;
+  }
+
+  .summary {
+    margin: 0 0 26px;
+    font-size: clamp(17px, 2vw, 21px);
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--subtle);
+  }
+
+  .source-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 0 34px;
+    padding: 13px 16px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: var(--card);
+    color: var(--body);
+  }
+
+  .source-card:hover {
+    border-color: var(--card-hover-border);
+    background: var(--card-hover);
+    color: var(--body);
+  }
+
+  .source-text {
+    min-width: 0;
+  }
+
+  .source-label {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    color: var(--link);
+  }
+
+  .source-name {
+    display: block;
+    overflow: hidden;
+    font-size: 14.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .source-arrow {
+    font-size: 15px;
+    color: var(--link);
+  }
+
+  .prose {
+    font-size: 17px;
+    line-height: 1.72;
+    color: var(--prose);
+  }
+
+  /* Rendered Markdown carries no scope attribute, hence :global. */
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 20px;
+  }
+
+  .prose :global(h2) {
+    margin: 38px 0 14px;
+    font-size: clamp(21px, 2.4vw, 27px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.024em;
+    color: var(--ink);
+  }
+
+  .prose :global(h3) {
+    margin: 30px 0 10px;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .prose :global(blockquote) {
+    margin: 28px 0;
+    padding-left: 20px;
+    border-left: 2px solid var(--quote-rule);
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--body-soft);
+  }
+
+  .prose :global(blockquote p) {
+    margin: 0;
+  }
+
+  .prose :global(a) {
+    border-bottom: 1px solid var(--underline);
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .prose :global(pre) {
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .prose :global(:not(pre) > code) {
+    padding: 2px 5px;
+    border-radius: 5px;
+    background: var(--surface-hover);
+    font-size: 0.88em;
+  }
+
+  .prose :global(hr) {
+    height: 1px;
+    margin: 38px 0;
+    border: none;
+    background-image: var(--hairline-gradient);
+  }
+
+  .article-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 44px;
+    padding-top: 22px;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>

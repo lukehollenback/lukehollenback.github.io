@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SERVICES } from '../data/services';
+---
+
+<BaseLayout
+  title="Services — Luke Hollenback"
+  description="Three ways to work with Luke Hollenback: product strategy, engineering and AI advisory, and website development. Engagements are shaped around what you actually need."
+>
+  <main id="main" class="page">
+    <div class="page-inner">
+      <h1 class="page-title">Three ways I work with you.</h1>
+      <p class="page-intro">
+        Engagements are shaped around what you actually need. The timings below are examples, not a menu. If what you
+        need isn't here, say so — I'd rather point you somewhere good than stretch to fit.
+      </p>
+      {
+        SERVICES.map((service) => (
+          <section class="service split hairline-top">
+            <div>
+              <p class="eyebrow">{service.num}</p>
+              <h2 class="section-title">{service.name}</h2>
+              <p class="eyebrow eyebrow-accent shape">{service.shape}</p>
+            </div>
+            <div>
+              <p class="service-body">{service.body}</p>
+              <p class="eyebrow">What you get</p>
+              <ul>
+                {service.deliverables.map((deliverable) => <li>{deliverable}</li>)}
+              </ul>
+            </div>
+          </section>
+        ))
+      }
+      <div class="closing hairline-top">
+        <a class="button" href="/contact">Tell me what you're working on <span class="button-arrow">→</span></a>
+        <span class="reply-time">I reply within two business days.</span>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-title {
+    max-width: 26ch;
+    margin-bottom: 14px;
+  }
+
+  .page-intro {
+    max-width: 56ch;
+    margin-bottom: clamp(36px, 6vh, 60px);
+  }
+
+  .service {
+    gap: clamp(16px, 4vw, 56px);
+    padding: clamp(26px, 4vh, 40px) 0;
+  }
+
+  .shape {
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .service-body {
+    max-width: 54ch;
+    margin: 0 0 20px;
+    font-size: 15.5px;
+    line-height: 1.66;
+    color: var(--body);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--body-soft);
+  }
+
+  li::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 5px;
+    height: 1px;
+    background: var(--bullet);
+  }
+
+  .closing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    padding-top: 32px;
+  }
+
+  .reply-time {
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+</style>

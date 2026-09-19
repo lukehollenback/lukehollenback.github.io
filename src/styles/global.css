@@ -1,0 +1,301 @@
+@import '@fontsource-variable/schibsted-grotesk';
+@import './tokens.css';
+
+/* Base */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  font-family: var(--font);
+  font-weight: 400;
+  letter-spacing: -0.002em;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+blockquote {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+a,
+button {
+  transition:
+    background-color 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease,
+    opacity 0.22s ease;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+::placeholder {
+  color: var(--placeholder);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* Page shell */
+
+.page {
+  flex: 1;
+  padding: clamp(40px, 8vh, 90px) var(--shell-pad) 80px;
+}
+
+.page-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--split-min, 300px)), 1fr));
+  align-items: start;
+}
+
+.split > * {
+  min-width: 0;
+}
+
+/* Type scale */
+
+.page-title {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.032em;
+}
+
+.page-intro {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--subtle);
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.026em;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.eyebrow-accent {
+  color: var(--link);
+}
+
+/* Fading hairline: the only divider on the site. */
+
+.hairline-top,
+.hairline-bottom {
+  background-image: var(--hairline-gradient);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+}
+
+.hairline-top {
+  background-position: top left;
+}
+
+.hairline-bottom {
+  background-position: bottom left;
+}
+
+/* Pine stroke under the bio's four key statements. */
+
+.highlight {
+  padding-bottom: 3px;
+  background-image: linear-gradient(var(--highlight), var(--highlight));
+  background-repeat: no-repeat;
+  background-size: 100% 2.5px;
+  background-position: bottom left;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Pill button */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--accent-hover);
+  color: var(--on-accent);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.button-arrow {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.quiet-link {
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--underline);
+  font-size: 14px;
+  color: var(--subtle);
+}
+
+.quiet-link:hover {
+  border-bottom-color: var(--link);
+  color: var(--link);
+}
+
+/* Tag chip */
+
+.chip {
+  padding: 3px 7px;
+  border: 1px solid var(--chip-border);
+  border-radius: var(--pill-radius);
+  background: transparent;
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+button.chip {
+  min-width: 62px;
+  padding: 6px 14px;
+  text-align: center;
+  cursor: pointer;
+}
+
+button.chip[aria-pressed='true'] {
+  border-color: var(--chip-active);
+  background: var(--chip-active);
+  color: var(--on-accent);
+}
+
+button.chip-all {
+  padding: 4px 11px 6px;
+  font-size: 15px;
+  line-height: 0.85;
+}
+
+/*
+ * Extends a small control's hit area to 44px without moving anything:
+ * the invisible box is centered on the control and takes no layout space.
+ */
+
+.hit-area {
+  position: relative;
+}
+
+.hit-area::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+/* Skip link */
+
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: var(--shell-pad);
+  z-index: 1;
+  padding: 8px 14px;
+  border-radius: var(--pill-radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 13.5px;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  color: var(--on-accent);
+  transform: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

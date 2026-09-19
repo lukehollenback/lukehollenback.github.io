@@ -1,0 +1,82 @@
+---
+import { NAV_ITEMS, SITE } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const isCurrentSection = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="site-header">
+  <a class="wordmark" href="/">{SITE.name}</a>
+  <nav class="site-nav" aria-label="Primary">
+    {
+      NAV_ITEMS.map((item) => (
+        <a class="nav-link hit-area" href={item.href} aria-current={isCurrentSection(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+    <button class="theme-toggle hit-area" type="button" data-theme-toggle hidden></button>
+  </nav>
+</header>
+
+<script>
+  import '../scripts/theme-toggle';
+</script>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    padding: clamp(15px, 3vh, 22px) var(--shell-pad) 0;
+  }
+
+  .wordmark {
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .wordmark:hover {
+    color: var(--link);
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(14px, 2.4vw, 30px);
+    font-size: 13.5px;
+    letter-spacing: 0.04em;
+  }
+
+  .nav-link {
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    color: var(--subtle);
+  }
+
+  .nav-link:hover {
+    border-bottom-color: var(--link);
+    color: var(--link);
+  }
+
+  .nav-link[aria-current='page'] {
+    color: var(--ink);
+  }
+
+  .theme-toggle {
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .theme-toggle:hover {
+    color: var(--link);
+  }
+</style>

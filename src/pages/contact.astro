@@ -1,0 +1,140 @@
+---
+import { PUBLIC_CONTACT_ENDPOINT } from 'astro:env/client';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact — Luke Hollenback"
+  description="Tell Luke Hollenback what you're stuck on. A few sentences is enough; every message gets read and a fast reply."
+>
+  <main id="main" class="page">
+    <div class="page-inner contact-inner split">
+      <div>
+        <h1 class="page-title">What are you stuck on?</h1>
+        <p class="invitation">A few sentences is enough. I read everything and reply fast, even when the answer is no.</p>
+        <a class="email" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </div>
+      <form action={PUBLIC_CONTACT_ENDPOINT} method="post" data-contact-form data-fallback-email={SITE.email}>
+        <label>
+          <span class="eyebrow">Name</span>
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label>
+          <span class="eyebrow">Email</span>
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+        <label>
+          <span class="eyebrow">Type of help</span>
+          <select name="topic">
+            <option>Product Strategy</option>
+            <option>Engineering &amp; AI Advisory</option>
+            <option>Website Development</option>
+            <option>Something else</option>
+          </select>
+        </label>
+        <label>
+          <span class="eyebrow">Details</span>
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+        <!-- Honeypot: people never see it, bots fill it, and the form service drops those submissions. -->
+        <div class="visually-hidden" aria-hidden="true">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+        </div>
+        <div class="submit-row">
+          <button class="button send" type="submit">Send</button>
+          <span class="form-status" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  import '../scripts/contact-form';
+</script>
+
+<style>
+  .contact-inner {
+    gap: clamp(28px, 6vw, 80px);
+  }
+
+  .page-title {
+    max-width: 18ch;
+    font-size: clamp(28px, 4vw, 42px);
+  }
+
+  .invitation {
+    max-width: 42ch;
+    margin: 0 0 26px;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--subtle);
+  }
+
+  .email {
+    font-size: 14.5px;
+    color: var(--body);
+  }
+
+  .email:hover {
+    color: var(--link);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  label {
+    display: block;
+  }
+
+  .eyebrow {
+    display: block;
+    margin-bottom: 7px;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid var(--field-border);
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+  }
+
+  textarea {
+    line-height: 1.6;
+    resize: vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-bottom-color: var(--field-focus);
+  }
+
+  .submit-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .send {
+    min-height: 48px;
+    padding-inline: 28px;
+    letter-spacing: 0.01em;
+  }
+
+  .form-status {
+    font-size: 13.5px;
+    color: var(--link);
+  }
+</style>
