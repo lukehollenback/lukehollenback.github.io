@@ -282,6 +282,18 @@ describe('accessibility', () => {
   });
 });
 
+describe('icons', () => {
+  test('every page links an icon each browser family can use, and the files exist (I1)', () => {
+    const icons = ['/favicon.ico', '/favicon.svg', '/apple-touch-icon.png'];
+    const missingLinks = ALL_PAGES.filter((name) => {
+      const hrefs = page(name).querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').map((link) => link.getAttribute('href'));
+      return icons.some((icon) => !hrefs.includes(icon));
+    });
+    expect(missingLinks).toEqual([]);
+    expect(icons.filter((icon) => !existsSync(join(siteDir, icon)))).toEqual([]);
+  });
+});
+
 describe('copy', () => {
   test('the guardrails typo from the prototype is corrected', () => {
     const text = page('services').text;
