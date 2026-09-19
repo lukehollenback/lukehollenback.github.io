@@ -64,6 +64,8 @@ data the pages use (`src/data/`, `content/writing/`), so there is nothing to kee
 
 - `/llms.txt` and `/llms-full.txt` → site map and full site text for language models.
 - `/writing/:slug.md` → every entry as standalone Markdown. `/rss.xml` → feed.
+- `/sitemap-index.xml` → every page that is its own canonical. Cross-posts are left out so the
+  original keeps the search credit.
 - One JSON-LD graph per page (`src/lib/structured-data.ts`).
 - `robots.txt` welcomes AI crawlers by name. The deploy pings IndexNow with every sitemap URL.
 

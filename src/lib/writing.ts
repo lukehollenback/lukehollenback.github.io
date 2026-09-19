@@ -29,6 +29,11 @@ export function isProject(tags: string[]): boolean {
   return tags.includes('project');
 }
 
+/** A cross-post's source is another copy of the same text, so it keeps the search credit. A project's source is not. */
+export function canonicalSourceFor(tags: string[], sourceUrl?: string): string | undefined {
+  return isProject(tags) ? undefined : sourceUrl;
+}
+
 export function sourceLabelFor(tags: string[]): string {
   return isProject(tags) ? 'Project home' : 'First published at';
 }

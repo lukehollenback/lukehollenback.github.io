@@ -145,12 +145,29 @@ describe('metadata', () => {
     expect(meta(doc, 'article:published_time')).toBe('2026-03-02T00:00:00.000Z');
   });
 
-  test('build emits a sitemap without the 404 page, and robots.txt points at it (S4)', () => {
-    const sitemap = readFileSync(join(siteDir, 'sitemap-0.xml'), 'utf8');
-    expect(existsSync(join(siteDir, 'sitemap-index.xml'))).toBe(true);
-    expect(sitemap).toContain('https://lukehollenback.me/writing/original-piece');
-    expect(sitemap).not.toContain('404');
+  test('build emits a sitemap index that points at the sitemap, and robots.txt points at the index (S4)', () => {
+    expect(siteFile('sitemap-index.xml')).toContain('<loc>https://lukehollenback.me/sitemap-0.xml</loc>');
     expect(readFileSync(join(siteDir, 'robots.txt'), 'utf8')).toContain('Sitemap: https://lukehollenback.me/sitemap-index.xml');
+  });
+
+  test('the sitemap lists exactly the pages that are indexable and their own canonical (S4)', () => {
+    const listed = [...siteFile('sitemap-0.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]).sort();
+    const selfCanonical = ALL_PAGES.map((name) => page(name))
+      .filter((doc) => meta(doc, 'robots') !== 'noindex')
+      .map((doc) => doc.querySelector('link[rel="canonical"]')?.getAttribute('href'))
+      .filter((href) => href?.startsWith('https://lukehollenback.me/'))
+      .sort();
+    expect(listed).toEqual(selfCanonical);
+    expect(listed).not.toContain('https://lukehollenback.me/writing/cross-posted-piece');
+    expect(listed).not.toContain('https://lukehollenback.me/404');
+  });
+
+  test('every page the build emits is covered by the sitemap check (S4)', () => {
+    const builtPages = readdirSync(siteDir, { recursive: true, encoding: 'utf8' })
+      .filter((file) => file.endsWith('.html'))
+      .map((file) => file.replace(/\.html$/, ''))
+      .sort();
+    expect(builtPages).toEqual([...ALL_PAGES].sort());
   });
 
   test('a project keeps its own canonical URL (S5)', () => {

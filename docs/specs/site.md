@@ -85,8 +85,11 @@ merged; contrast stays ≥4.5:1 for body text in both schemes.
 - **S3.** Structured data → see Discovery (D1, D2).
 - **S6.** Every page declares its language twice: `<html lang>` for browsers and assistive tech,
   and a `content-language` meta, which Bing's crawler looks for specifically.
-- **S4.** The build emits `sitemap-index.xml` and a `robots.txt` that references it. `/404` is
-  excluded from the sitemap.
+- **S4.** The build emits `sitemap-index.xml` (pointing at `sitemap-0.xml`) and a `robots.txt`
+  that references it. The sitemap lists exactly the pages that are indexable and their own
+  canonical: `/404` and cross-posted articles are left out, because a sitemap entry is itself a
+  canonical signal and would contradict S5. It is generated from the same data as the pages, so
+  a new route must be added to it on purpose; the tests catch one that is missing.
 - **S5.** A cross-posted article (`sourceUrl` set) sets its canonical URL to `sourceUrl`, so the
   original keeps the search credit. A project keeps its own canonical URL: its source is a
   different thing (a repo, a store page), not another copy of the same text.

@@ -2,7 +2,7 @@ import { BIO_HEADING, BIO_PARAGRAPHS, PATENTS, TIMELINE, bioParagraphText } from
 import { SERVICES } from '../data/services';
 import { NAV_ITEMS, SITE, absoluteUrl } from '../data/site';
 import type { Article } from './articles';
-import { formatMonthYear, isProject, sourceLabelFor, standaloneMarkdown } from './writing';
+import { canonicalSourceFor, formatMonthYear, isProject, sourceLabelFor, standaloneMarkdown } from './writing';
 
 const PAGE_NOTES: Record<string, string> = {
   '/bio': 'Career story, résumé, and patent filings.',
@@ -106,5 +106,29 @@ ${data.tags.map((tag) => `      <category>${escapeXml(tag)}</category>`).join('\
 ${items}
   </channel>
 </rss>
+`;
+}
+
+export function sitemapIndex(): string {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap><loc>${absoluteUrl('/sitemap-0.xml')}</loc></sitemap>
+</sitemapindex>
+`;
+}
+
+/** Only pages that are their own canonical: listing a cross-post here would contradict the canonical it points elsewhere. */
+export function sitemap(articles: Article[]): string {
+  const paths = [
+    '/',
+    ...NAV_ITEMS.map((item) => item.href),
+    ...articles.filter(({ data }) => !canonicalSourceFor(data.tags, data.sourceUrl)).map(({ id }) => `/writing/${id}`),
+  ];
+  const urls = paths.map((path) => `  <url><loc>${escapeXml(absoluteUrl(path))}</loc></url>`).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
 `;
 }
