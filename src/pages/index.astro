@@ -21,7 +21,7 @@ import { SITE } from '../data/site';
           </div>
         </div>
       </div>
-      <div class="hairline-top">
+      <div class="service-list hairline-top">
         {
           SERVICES.map((service) => (
             <a class="service hairline-bottom" href="/services">
@@ -83,8 +83,28 @@ import { SITE } from '../data/site';
     }
   }
 
-  /* Below 800px the grid is one column and the list ends just above the footer's hairline. */
+  /*
+   * Below 800px the grid is one column. The hero sits at the top and the list takes the remaining
+   * height, centered between the button and the footer. Its outer hairlines go: the footer's own
+   * hairline is right there, and two lines that close read as clutter.
+   */
   @media (width < 800px) {
+    .home {
+      align-items: stretch;
+      padding-bottom: 0;
+    }
+
+    .home-inner {
+      grid-template-rows: auto 1fr;
+      row-gap: 0;
+    }
+
+    .service-list {
+      align-self: center;
+      padding-block: clamp(24px, 4vh, 40px);
+      background-image: none;
+    }
+
     .service:last-child {
       background-image: none;
     }

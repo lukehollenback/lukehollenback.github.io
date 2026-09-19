@@ -58,8 +58,9 @@ site itself are now the source of truth for copy and design.
 - **T14.** Hover colors on controls that stay on the page (theme toggle, pill buttons) apply only
   under `@media (hover: hover)`. Touch screens keep `:hover` after a tap, which would leave them
   looking stuck.
-- **T13.** Two hairlines never stack. On home in its single-column layout the services list ends
-  just above the footer's hairline, so the list drops its closing hairline there.
+- **T13.** Two hairlines never stack. On home in its single-column layout the services list sits
+  just above the footer's hairline, so the list drops its outer hairlines there (the ones between
+  items stay) and is vertically centered between the button and the footer.
 - **T6.** The fading hairline is one utility (`.hairline-top` / `.hairline-bottom`) backed by one
   `--hairline-gradient` token. No element uses a plain border as a section divider.
 - **T7.** The bio carries exactly four `.highlight` statements (2.5px stroke,
