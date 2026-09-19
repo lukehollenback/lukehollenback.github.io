@@ -1,8 +1,8 @@
 # Spec — lukehollenback.me
 
-Production rebuild of the Claude Design prototype (`design/Portfolio.dc.html`). The prototype is
-the copy deck and the visual reference. `HANDOFF.md` lists what is kept verbatim and what is
-rebuilt; this spec turns that into testable criteria.
+The site began as a Claude Design prototype. The prototype and its handoff notes were removed
+once the rebuild shipped (they remain in git history before this change); this spec and the
+site itself are now the source of truth for copy and design.
 
 ## Architecture
 
@@ -138,11 +138,17 @@ request shape), which owns server-side validation, spam filtering, and delivery.
   an invisible centered pseudo-element (`.hit-area`) so the visual layout matches the prototype.
 - **A4.** `<html lang="en">`.
 
+## Icons
+
+- **I1.** Every page links `/favicon.ico` (Safari and legacy browsers ignore SVG icons),
+  `/favicon.svg`, and `/apple-touch-icon.png`, and the build emits all three. The rasters are
+  generated from the SVG by `scripts/generate-favicons.mjs`.
+
 ## Copy
 
-All copy is verbatim from the prototype, with one correction: 'gaurdrails' → 'guardrails' in the
-Engineering & AI Advisory body. New strings that the prototype had no need for (skip link, 404,
-empty writing index, form error, per-page meta descriptions) are kept minimal.
+Page copy was edited hard in the prototype and carried over verbatim. Treat it as deliberate:
+change it on purpose, not in passing. Functional strings (skip link, 404, form error, per-page
+meta descriptions) are kept minimal.
 
 ## Deferred
 

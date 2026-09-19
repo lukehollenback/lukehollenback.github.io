@@ -3,7 +3,6 @@
 Static site built with [Astro](https://astro.build), hosted on GitHub Pages. No backend.
 
 - Spec → `docs/specs/site.md`
-- Design reference and copy deck → `design/Portfolio.dc.html` (see `HANDOFF.md`)
 
 ## Develop
 
