@@ -55,6 +55,9 @@ site itself are now the source of truth for copy and design.
 - **T12.** The theme toggle is optically centered on the nav text, not on the link boxes (which
   are taller than their text because of the underline padding). When the nav wraps onto its own
   row, it spans the full width and the toggle sits at the right edge.
+- **T14.** Hover colors on controls that stay on the page (theme toggle, pill buttons) apply only
+  under `@media (hover: hover)`. Touch screens keep `:hover` after a tap, which would leave them
+  looking stuck.
 - **T13.** Two hairlines never stack. On home in its single-column layout the services list ends
   just above the footer's hairline, so the list drops its closing hairline there.
 - **T6.** The fading hairline is one utility (`.hairline-top` / `.hairline-bottom`) backed by one

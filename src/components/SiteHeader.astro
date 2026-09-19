@@ -119,7 +119,10 @@ const isCurrentSection = (href: string) => path === href || path.startsWith(`${h
     display: none;
   }
 
-  .theme-toggle:hover {
-    color: var(--link);
+  /* Touch screens keep :hover after a tap, and this button never navigates away to clear it. */
+  @media (hover: hover) {
+    .theme-toggle:hover {
+      color: var(--link);
+    }
   }
 </style>

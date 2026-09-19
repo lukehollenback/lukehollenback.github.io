@@ -194,8 +194,14 @@ button {
   cursor: pointer;
 }
 
+/* Touch screens keep :hover after a tap, which would leave the contact form's Send button looking pressed. */
+@media (hover: hover) {
+  .button:hover {
+    background: var(--accent-hover);
+  }
+}
+
 .button:hover {
-  background: var(--accent-hover);
   color: var(--on-accent);
 }
 
