@@ -202,6 +202,19 @@ describe('writing', () => {
     expect(page('writing').querySelector('[data-article-count]')?.text.trim()).toBe('3 pieces');
   });
 
+  test('the date prefix on a file name is not part of the URL (W9)', () => {
+    expect(existsSync(join(siteDir, 'writing/2026-03-02-original-piece.html'))).toBe(false);
+    expect(page('writing').querySelectorAll('[data-article]').map((entry) => entry.getAttribute('href'))).toContain('/writing/original-piece');
+  });
+
+  test('external links in a body open in a new tab and internal links do not (W10)', () => {
+    const links = page('writing/original-piece').querySelectorAll('.prose a');
+    const external = links.find((link) => link.getAttribute('href') === 'https://example.org/elsewhere');
+    const internal = links.find((link) => link.getAttribute('href') === '/writing/cross-posted-piece');
+    expect([external?.getAttribute('target'), external?.getAttribute('rel')]).toEqual(['_blank', 'noopener']);
+    expect(internal?.hasAttribute('target')).toBe(false);
+  });
+
   test('drafts are not built or listed (W6)', () => {
     expect(existsSync(join(siteDir, 'writing/unfinished-draft.html'))).toBe(false);
     expect(page('writing').text).not.toContain('secret');

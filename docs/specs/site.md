@@ -80,7 +80,10 @@ merged; contrast stays ≥4.5:1 for body text in both schemes.
 
 Pipeline: Obsidian → git → static build. Articles are Markdown files in `content/writing/`
 (open that folder as, or inside, an Obsidian vault). The directory can be overridden with the
-`WRITING_DIR` env var; the tests use this to build against fixtures. The file name is the slug.
+`WRITING_DIR` env var; the tests use this to build against fixtures.
+
+Files are named `yyyy-mm-dd-slug.md` so they sort by date in Obsidian and file managers. The date
+prefix is not part of the URL: `2020-08-17-goose.md` is served at `/writing/goose`.
 
 Front-matter: `title` (required), `date` (required), `summary` (required), `tags` (list,
 default empty), `sourceUrl` (optional URL), `sourceName` (optional), `draft` (optional).
@@ -105,6 +108,11 @@ links (a second repo, an App Store page) close the body on one line.
   ('All writing'). Chips are buttons with `aria-pressed`; selecting one hides non-matching
   articles and updates the 'N piece(s)' count. Without JavaScript all articles stay visible.
 - **W6.** `draft: true` articles are excluded from production builds.
+- **W9.** A file without a `yyyy-mm-dd-` prefix, or whose prefix differs from its front-matter
+  `date`, fails the build with a message naming the file. The front-matter date stays because
+  Obsidian properties read it; the check keeps the two from drifting.
+- **W10.** External links in a Markdown body open in a new tab (`target="_blank"`,
+  `rel="noopener"`). Links within the site do not.
 - **W7.** With no articles the index renders the heading, intro, and '0 pieces'; no chips.
 - **W8.** The fabricated prototype articles are not shipped.
 

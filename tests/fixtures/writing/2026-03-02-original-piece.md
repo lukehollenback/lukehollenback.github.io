@@ -5,4 +5,4 @@ summary: Fixture summary for a piece that started here.
 tags: [leadership, product]
 ---
 
-Only paragraph.
+Only paragraph, with an [external link](https://example.org/elsewhere) and an [internal link](/writing/cross-posted-piece).

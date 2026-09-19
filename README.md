@@ -18,7 +18,8 @@ type-checks.
 
 ## Write an article
 
-Add a Markdown file to `content/writing/`. The file name is the URL slug. Open that folder in
+Add a Markdown file to `content/writing/` named `yyyy-mm-dd-slug.md`. The date prefix keeps the
+folder sorted and must match the front-matter `date`; the URL is just `/writing/slug`. Open that folder in
 Obsidian if you like; commit and push to publish.
 
 ```markdown
@@ -33,7 +34,7 @@ draft: true                               # optional → visible in dev, never b
 ---
 ```
 
-Read time is computed. Invalid front-matter fails the build. Images go in
+Read time is computed. Invalid front-matter fails the build. External links open in a new tab. Images go in
 `content/writing/assets/` and are referenced as `./assets/name.png`.
 
 ### Projects
