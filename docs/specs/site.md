@@ -45,8 +45,12 @@ site itself are now the source of truth for copy and design.
   `lh-theme` (`light` | `dark`). Any other stored value is ignored.
 - **T4.** The stored theme is applied by an inline script in `<head>` before first paint → no
   flash of the wrong theme.
-- **T5.** The toggle shows `☾` with label 'Switch to dark' in light mode and `☀` with label
-  'Switch to light' in dark mode. It is hidden until JavaScript runs.
+- **T5.** The toggle shows a moon icon with label 'Switch to dark' in light mode and a sun icon with
+  label 'Switch to light' in dark mode. Both are inline SVG: iOS renders the `☀` character as a
+  color emoji. It is hidden until JavaScript runs.
+- **T11.** A pill button followed by a text link or note (`.action-row`) stacks deliberately when
+  the pair no longer fits on one line, and the second item is indented by the button's inline
+  padding so its text aligns with the button's label rather than its edge.
 - **T6.** The fading hairline is one utility (`.hairline-top` / `.hairline-bottom`) backed by one
   `--hairline-gradient` token. No element uses a plain border as a section divider.
 - **T7.** The bio carries exactly four `.highlight` statements (2.5px stroke,

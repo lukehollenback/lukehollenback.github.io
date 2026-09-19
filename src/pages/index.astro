@@ -16,9 +16,11 @@ import { SERVICES } from '../data/services';
           Twelve years building hard software that powers real businesses. I now run product development for an
           enterprise AI platform. Multiple patents filed, countless products shipped, and an addiction to simplicity.
         </p>
-        <div class="actions">
-          <a class="button" href="/contact">Start a Conversation <span class="button-arrow">→</span></a>
-          <a class="quiet-link" href="/bio">Check my Experience</a>
+        <div class="action-row">
+          <div class="action-row-items">
+            <a class="button" href="/contact">Start a Conversation <span class="button-arrow">→</span></a>
+            <a class="quiet-link" href="/bio">Check my Experience</a>
+          </div>
         </div>
       </div>
       <div class="hairline-top">
@@ -76,11 +78,17 @@ import { SERVICES } from '../data/services';
     color: var(--body-soft);
   }
 
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 20px;
+  /* 380px is where this button and link stop fitting on one line. */
+  @container (width < 380px) {
+    .action-row-items {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .quiet-link {
+      margin-left: var(--button-pad-inline);
+    }
   }
 
   .service {

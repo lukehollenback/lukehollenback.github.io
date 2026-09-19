@@ -96,6 +96,12 @@ describe('theming', () => {
     expect(toggle?.hasAttribute('hidden')).toBe(true);
   });
 
+  test('theme toggle icons are inline SVG, never emoji-prone characters (T5)', () => {
+    const toggle = page('index').querySelector('[data-theme-toggle]');
+    expect(toggle?.querySelectorAll('svg')).toHaveLength(2);
+    expect(toggle?.text.trim()).toBe('');
+  });
+
   test('bio carries exactly four highlighted statements (T7)', () => {
     expect(page('bio').querySelectorAll('.highlight')).toHaveLength(4);
   });

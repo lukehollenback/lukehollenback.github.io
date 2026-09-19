@@ -53,6 +53,7 @@
   --font: 'Schibsted Grotesk Variable', system-ui, sans-serif;
   --shell-pad: clamp(20px, 5vw, 64px);
   --pill-radius: 980px;
+  --button-pad-inline: 26px;
 }
 
 :root[data-theme='light'] {

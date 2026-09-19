@@ -183,7 +183,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 13px 26px;
+  padding: 13px var(--button-pad-inline);
   border: none;
   border-radius: var(--pill-radius);
   background: var(--accent);
@@ -207,6 +207,22 @@ button {
 .button-arrow {
   font-size: 13px;
   opacity: 0.75;
+}
+
+/*
+ * A pill button followed by a text link or note. The stacking breakpoint depends on how wide that
+ * page's pair is, so each page sets its own container query against .action-row.
+ */
+
+.action-row {
+  container-type: inline-size;
+}
+
+.action-row-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
 }
 
 .quiet-link {
