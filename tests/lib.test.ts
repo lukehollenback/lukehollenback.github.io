@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { nextTheme, parseStoredTheme } from '../src/lib/theme';
-import { collectTags, formatMonthYear, pieceCountLabel, readTimeMinutes, sourceNameFor } from '../src/lib/writing';
+import { collectTags, formatMonthYear, isProject, pieceCountLabel, readTimeMinutes, sourceLabelFor, sourceNameFor } from '../src/lib/writing';
 
 describe('theme', () => {
   test('accepts only light or dark as a stored theme (T3)', () => {
@@ -35,6 +35,16 @@ describe('writing helpers', () => {
 
   test('an explicit source name wins over the host (W4)', () => {
     expect(sourceNameFor('https://www.nextworld.net/', 'Nextworld Engineering Blog')).toBe('Nextworld Engineering Blog');
+  });
+
+  test('an entry is a project when it carries the project tag', () => {
+    expect(isProject(['project', 'games'])).toBe(true);
+    expect(isProject(['ai', 'engineering'])).toBe(false);
+  });
+
+  test('source card is labelled by what the source is (W4)', () => {
+    expect(sourceLabelFor(['ai'])).toBe('First published at');
+    expect(sourceLabelFor(['project'])).toBe('Project home');
   });
 
   test('tags are unique and keep first-seen order (W5)', () => {

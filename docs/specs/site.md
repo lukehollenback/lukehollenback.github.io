@@ -73,7 +73,8 @@ merged; contrast stays ≥4.5:1 for body text in both schemes.
 - **S4.** The build emits `sitemap-index.xml` and a `robots.txt` that references it. `/404` is
   excluded from the sitemap.
 - **S5.** A cross-posted article (`sourceUrl` set) sets its canonical URL to `sourceUrl`, so the
-  original keeps the search credit.
+  original keeps the search credit. A project keeps its own canonical URL: its source is a
+  different thing (a repo, a store page), not another copy of the same text.
 
 ## Writing
 
@@ -87,15 +88,18 @@ default empty), `sourceUrl` (optional URL), `sourceName` (optional), `draft` (op
 Images live in `content/writing/assets/` and are referenced relatively (`./assets/name.png`), which
 resolves in both Obsidian and the build. The build emits optimized copies.
 
-Personal projects are writing entries tagged `project`. They link out from the body rather than
-using `sourceUrl`, which is reserved for true cross-posts because it moves the canonical URL.
+Personal projects are writing entries tagged `project`. Every project has the same shape: a
+one-line `summary`, a `sourceUrl` for its primary home (shown in the same source card as a
+cross-post), an optional short body that never repeats the summary, then screenshots. Secondary
+links (a second repo, an App Store page) close the body on one line.
 
 - **W1.** Invalid or missing required front-matter fails the build.
 - **W2.** The index lists articles newest first with date ('Aug 2026'), title, summary, tags.
 - **W3.** Read time is computed from the body at 230 words per minute, minimum 1 → 'Aug 2026 ·
-  7 min read'.
-- **W4.** `sourceUrl` marks a cross-post: the index shows '↗ {sourceName}' and the article shows
-  the 'First published at' card linking to `sourceUrl`. `sourceName` defaults to the URL's host
+  7 min read'. Projects show the date only; a read time on a two-line entry is noise.
+- **W4.** `sourceUrl` gives an entry a source: the index shows '↗ {sourceName}' and the entry shows
+  the source card linking to `sourceUrl`. The card is labelled 'First published at' for a
+  cross-posted article and 'Project home' for a project. `sourceName` defaults to the URL's host
   without `www.`.
 - **W5.** Tag chips are the union of all article tags in first-seen order, preceded by '∞'
   ('All writing'). Chips are buttons with `aria-pressed`; selecting one hides non-matching

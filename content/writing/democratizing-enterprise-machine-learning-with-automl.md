@@ -1,6 +1,6 @@
 ---
 title: "Democratizing Enterprise Machine Learning with AutoML"
-date: 2026-05-05
+date: 2026-03-04
 summary: "How we reduced ML model build time by 95% and enabled domain experts to deploy production-grade models in days instead of weeks."
 tags: [ai, platforms]
 sourceUrl: "https://www.nextw.com/tech-blog/democratizing-enterprise-machine-learning-with-auto-ml"

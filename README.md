@@ -33,7 +33,15 @@ draft: true                               # optional → visible in dev, never b
 ---
 ```
 
-Read time is computed. Invalid front-matter fails the build.
+Read time is computed. Invalid front-matter fails the build. Images go in
+`content/writing/assets/` and are referenced as `./assets/name.png`.
+
+### Projects
+
+A project is an entry tagged `project`. Keep them all the same shape: one-line `summary`,
+`sourceUrl` + `sourceName` for its primary home (the card reads 'Project home' and the canonical
+URL stays on this site), an optional short body that does not repeat the summary, screenshots,
+then any secondary links on a closing line. A body is optional.
 
 ## Deploy
 

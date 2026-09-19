@@ -16,6 +16,15 @@ export function sourceNameFor(sourceUrl: string, sourceName?: string): string {
   return sourceName ?? new URL(sourceUrl).hostname.replace(/^www\./, '');
 }
 
+/** Projects share the writing pipeline; the `project` tag is what sets them apart. */
+export function isProject(tags: string[]): boolean {
+  return tags.includes('project');
+}
+
+export function sourceLabelFor(tags: string[]): string {
+  return isProject(tags) ? 'Project home' : 'First published at';
+}
+
 export function collectTags(tagLists: string[][]): string[] {
   return [...new Set(tagLists.flat())];
 }

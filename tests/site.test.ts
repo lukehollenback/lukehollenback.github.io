@@ -10,7 +10,7 @@ const siteDir = join(projectRoot, '.test-dist/with-articles');
 const emptySiteDir = join(projectRoot, '.test-dist/no-articles');
 
 const STATIC_PAGES = ['index', 'bio', 'services', 'writing', 'contact', '404'];
-const ARTICLE_PAGES = ['writing/cross-posted-piece', 'writing/original-piece'];
+const ARTICLE_PAGES = ['writing/cross-posted-piece', 'writing/original-piece', 'writing/fixture-project'];
 const ALL_PAGES = [...STATIC_PAGES, ...ARTICLE_PAGES];
 
 function page(name: string, dir = siteDir): HTMLElement {
@@ -140,6 +140,11 @@ describe('metadata', () => {
     expect(readFileSync(join(siteDir, 'robots.txt'), 'utf8')).toContain('Sitemap: https://lukehollenback.me/sitemap-index.xml');
   });
 
+  test('a project keeps its own canonical URL (S5)', () => {
+    const canonical = page('writing/fixture-project').querySelector('link[rel="canonical"]');
+    expect(canonical?.getAttribute('href')).toBe('https://lukehollenback.me/writing/fixture-project');
+  });
+
   test('a cross-post points its canonical URL at the original (S5)', () => {
     const canonical = page('writing/cross-posted-piece').querySelector('link[rel="canonical"]');
     expect(canonical?.getAttribute('href')).toBe('https://www.example.com/original-piece');
@@ -149,12 +154,12 @@ describe('metadata', () => {
 describe('writing', () => {
   test('index lists published articles newest first (W2, W6)', () => {
     const titles = page('writing').querySelectorAll('[data-article] h2').map((heading) => heading.text.trim());
-    expect(titles).toEqual(['A cross-posted fixture piece', 'An original fixture piece']);
+    expect(titles).toEqual(['A cross-posted fixture piece', 'An original fixture piece', 'A fixture project']);
   });
 
   test('index shows month and year for each article (W2)', () => {
     const dates = page('writing').querySelectorAll('[data-article] time').map((time) => time.text.trim());
-    expect(dates).toEqual(['Aug 2026', 'Mar 2026']);
+    expect(dates).toEqual(['Aug 2026', 'Mar 2026', 'Nov 2025']);
   });
 
   test('article shows date and computed read time (W3)', () => {
@@ -169,19 +174,32 @@ describe('writing', () => {
     expect(card?.text).toContain('First published at');
   });
 
+  test('a project uses the same source card, labelled as its home (W4)', () => {
+    const indexEntry = page('writing').querySelectorAll('[data-article]')[2];
+    const card = page('writing/fixture-project').querySelector('.source-card');
+    expect(indexEntry.text).toContain('↗ GitHub');
+    expect(card?.getAttribute('href')).toBe('https://github.com/example/fixture-project');
+    expect(card?.text).toContain('Project home');
+    expect(card?.text).not.toContain('First published at');
+  });
+
+  test('a project shows its date without a read time (W3)', () => {
+    expect(page('writing/fixture-project').querySelector('.article-meta')?.text.trim()).toBe('Nov 2025');
+  });
+
   test('an original article has no source card (W4)', () => {
     expect(page('writing/original-piece').querySelector('.source-card')).toBeNull();
   });
 
   test('tag chips are pressable buttons in first-seen order, led by the all chip (W5)', () => {
     const chips = page('writing').querySelectorAll('button.chip');
-    expect(chips.map((chip) => chip.text.trim())).toEqual(['∞', 'ai', 'product', 'leadership']);
-    expect(chips.map((chip) => chip.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false', 'false']);
+    expect(chips.map((chip) => chip.text.trim())).toEqual(['∞', 'ai', 'product', 'leadership', 'project']);
+    expect(chips.map((chip) => chip.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false', 'false', 'false']);
     expect(chips[0].getAttribute('aria-label')).toBe('All writing');
   });
 
   test('count label reflects the number of published pieces (W5)', () => {
-    expect(page('writing').querySelector('[data-article-count]')?.text.trim()).toBe('2 pieces');
+    expect(page('writing').querySelector('[data-article-count]')?.text.trim()).toBe('3 pieces');
   });
 
   test('drafts are not built or listed (W6)', () => {
