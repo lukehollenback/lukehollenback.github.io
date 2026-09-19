@@ -57,6 +57,23 @@ Keep every project the same shape: one-line `summary`, `sourceUrl` + `sourceName
 home, an optional short body that does not repeat the summary, screenshots, then any secondary
 links on a closing line. A body is optional.
 
+## Discovery
+
+Everything that helps search engines and AI agents is generated at build time from the same
+data the pages use (`src/data/`, `content/writing/`), so there is nothing to keep in sync:
+
+- `/llms.txt` and `/llms-full.txt` → site map and full site text for language models.
+- `/writing/:slug.md` → every entry as standalone Markdown. `/rss.xml` → feed.
+- One JSON-LD graph per page (`src/lib/structured-data.ts`).
+- `robots.txt` welcomes AI crawlers by name. The deploy pings IndexNow with every sitemap URL.
+
+Two assets are rendered by hand and committed. Re-run after changing their sources:
+
+```bash
+node scripts/generate-og-image.mjs   # scripts/og-image.html → public/og-image.png (needs Chrome or Edge)
+node scripts/generate-favicons.mjs   # public/favicon.svg → favicon.ico, apple-touch-icon.png
+```
+
 ## Deploy
 
 Pushing to `main` runs `.github/workflows/deploy.yml` (check → test → build → Pages).

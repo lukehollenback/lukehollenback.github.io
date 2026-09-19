@@ -1,7 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { nextTheme, parseStoredTheme } from '../src/lib/theme';
 import { articleSlugFromFile } from '../src/lib/article-files';
-import { collectTags, formatMonthYear, isProject, pieceCountLabel, readTimeMinutes, sourceLabelFor, sourceNameFor } from '../src/lib/writing';
+import { bioParagraphText } from '../src/data/bio';
+import { collectTags, formatMonthYear, isProject, pieceCountLabel, readTimeMinutes, sourceLabelFor, sourceNameFor, standaloneMarkdown } from '../src/lib/writing';
 
 describe('theme', () => {
   test('accepts only light or dark as a stored theme (T3)', () => {
@@ -72,5 +73,19 @@ describe('article file names', () => {
 
   test('rejects a prefix that disagrees with the front-matter date (W9)', () => {
     expect(() => articleSlugFromFile('2020-08-17-goose.md', '2020-09-01')).toThrow(/2020-08-17-goose\.md.*2020-09-01/);
+  });
+});
+
+describe('plain text for agents', () => {
+  test('images become their alt text so Markdown stands alone (D6)', () => {
+    expect(standaloneMarkdown('Before.\n\n![A diagram of the flow.](./assets/flow.png)\n\nAfter.')).toBe(
+      'Before.\n\n[Image: A diagram of the flow.]\n\nAfter.',
+    );
+  });
+
+  test('bio paragraphs flatten to the same sentences the page shows (D12)', () => {
+    expect(bioParagraphText(['Plain start. ', { highlight: 'A key statement' }, '. Then more.'])).toBe(
+      'Plain start. A key statement. Then more.',
+    );
   });
 });

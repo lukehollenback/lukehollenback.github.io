@@ -2,10 +2,12 @@
 import { PUBLIC_CONTACT_ENDPOINT } from 'astro:env/client';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../data/site';
+import { breadcrumbNode } from '../lib/structured-data';
 ---
 
 <BaseLayout
-  title="Contact — Luke Hollenback"
+  title="Contact Luke Hollenback — Product, Engineering & AI Advisory"
+  structuredData={[breadcrumbNode([{ name: 'Contact', path: '/contact' }])]}
   description="Tell Luke Hollenback what you're stuck on. A few sentences is enough; every message gets read and a fast reply."
 >
   <main id="main" class="page">

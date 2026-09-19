@@ -1,14 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublishedArticles } from '../../lib/articles';
+import { breadcrumbNode, entryListNode } from '../../lib/structured-data';
 import { collectTags, formatMonthYear, pieceCountLabel, sourceNameFor } from '../../lib/writing';
 
 const articles = await getPublishedArticles();
 const tags = collectTags(articles.map((article) => article.data.tags));
+const entryList = entryListNode(articles.map(({ id, data }) => ({ title: data.title, path: `/writing/${id}` })));
 ---
 
 <BaseLayout
-  title="Writing — Luke Hollenback"
+  title="Writing on AI, Platforms & Engineering Leadership — Luke Hollenback"
+  structuredData={[entryList, breadcrumbNode([{ name: 'Writing', path: '/writing' }])]}
   description="Luke Hollenback on platforms, teams, hiring, and where AI actually adds value. Only what has shipped."
 >
   <main id="main" class="page">

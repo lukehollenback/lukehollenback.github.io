@@ -44,3 +44,14 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+      # Tells Bing (which also feeds ChatGPT search and Copilot) what changed, instead of waiting for a crawl.
+      # The key is public by design: it must match public/<key>.txt. A failed ping never fails the deploy.
+      - name: Submit URLs to IndexNow
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: 5d47e7a00f7195528d1173fa51671137
+        run: |
+          urls=$(curl -fsS https://lukehollenback.me/sitemap-0.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | jq -R . | jq -s .)
+          jq -n --arg key "$INDEXNOW_KEY" --argjson urls "$urls" \
+            '{host: "lukehollenback.me", key: $key, keyLocation: "https://lukehollenback.me/\($key).txt", urlList: $urls}' \
+            | curl -fsS -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' -d @-

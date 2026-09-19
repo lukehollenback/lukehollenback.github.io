@@ -7,9 +7,17 @@ export function formatMonthYear(date: Date): string {
   return monthYearFormat.format(date);
 }
 
+export function wordCount(markdownBody: string): number {
+  return markdownBody.split(/\s+/).filter(Boolean).length;
+}
+
 export function readTimeMinutes(markdownBody: string): number {
-  const wordCount = markdownBody.split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.ceil(wordCount / WORDS_PER_MINUTE));
+  return Math.max(1, Math.ceil(wordCount(markdownBody) / WORDS_PER_MINUTE));
+}
+
+/** Markdown served on its own cannot resolve the entry's relative image paths, so images become their alt text. */
+export function standaloneMarkdown(markdownBody: string): string {
+  return markdownBody.replace(/!\[([^\]]*)\]\([^)]*\)/g, '[Image: $1]').trim();
 }
 
 export function sourceNameFor(sourceUrl: string, sourceName?: string): string {

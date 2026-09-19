@@ -11,8 +11,8 @@ function visibleTheme(): Theme {
 function paintToggle(): void {
   const dark = visibleTheme() === 'dark';
   const label = dark ? 'Switch to light' : 'Switch to dark';
-  toggle.querySelector<SVGElement>('[data-icon="sun"]')!.toggleAttribute('hidden', !dark);
-  toggle.querySelector<SVGElement>('[data-icon="moon"]')!.toggleAttribute('hidden', dark);
+  toggle.querySelector<HTMLElement>('[data-icon="sun"]')!.hidden = !dark;
+  toggle.querySelector<HTMLElement>('[data-icon="moon"]')!.hidden = dark;
   toggle.title = label;
   toggle.setAttribute('aria-label', label);
 }

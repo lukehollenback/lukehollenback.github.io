@@ -16,13 +16,17 @@ const isCurrentSection = (href: string) => path === href || path.startsWith(`${h
       ))
     }
     <button class="theme-toggle hit-area" type="button" data-theme-toggle hidden>
-      <svg data-icon="moon" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20 14.500A8.500 8.500 0 0 1 9.500 4 8.500 8.500 0 1 0 20 14.500z" />
-      </svg>
-      <svg data-icon="sun" viewBox="0 0 24 24" aria-hidden="true" hidden>
+      <span data-icon="moon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 14.500A8.500 8.500 0 0 1 9.500 4 8.500 8.500 0 1 0 20 14.500z" />
+        </svg>
+      </span>
+      <span data-icon="sun" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="4" />
         <path d="M12 2.500v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300 7 7M17 17l1.700 1.700M18.700 5.300 17 7M7 17l-1.700 1.700" />
-      </svg>
+        </svg>
+      </span>
     </button>
   </nav>
 </header>
@@ -96,7 +100,11 @@ const isCurrentSection = (href: string) => path === href || path.startsWith(`${h
     stroke-linejoin: round;
   }
 
-  .theme-toggle svg[hidden] {
+  .theme-toggle span {
+    display: block;
+  }
+
+  .theme-toggle span[hidden] {
     display: none;
   }
 

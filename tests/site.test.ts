@@ -22,11 +22,23 @@ function meta(doc: HTMLElement, key: string): string | undefined {
   return tag?.getAttribute('content');
 }
 
-function jsonLdTypes(doc: HTMLElement): string[] {
-  return doc
-    .querySelectorAll('script[type="application/ld+json"]')
-    .map((script) => JSON.parse(script.textContent)['@type']);
+type JsonLdNode = Record<string, any>;
+
+function jsonLdGraph(doc: HTMLElement): JsonLdNode[] {
+  const scripts = doc.querySelectorAll('script[type="application/ld+json"]');
+  expect(scripts).toHaveLength(1);
+  return JSON.parse(scripts[0].textContent)['@graph'];
 }
+
+function jsonLdNode(doc: HTMLElement, type: string): JsonLdNode | undefined {
+  return jsonLdGraph(doc).find((node) => node['@type'] === type);
+}
+
+function siteFile(path: string): string {
+  return readFileSync(join(siteDir, path), 'utf8');
+}
+
+const PERSON_ID = 'https://lukehollenback.me/#person';
 
 describe('routes', () => {
   test.each(ALL_PAGES)('emits %s as a static file (R1)', (name) => {
@@ -131,11 +143,6 @@ describe('metadata', () => {
     const doc = page('writing/original-piece');
     expect(meta(doc, 'og:type')).toBe('article');
     expect(meta(doc, 'article:published_time')).toBe('2026-03-02T00:00:00.000Z');
-  });
-
-  test('every page carries the Person JSON-LD and articles add BlogPosting (S3)', () => {
-    expect(ALL_PAGES.filter((name) => !jsonLdTypes(page(name)).includes('Person'))).toEqual([]);
-    expect(jsonLdTypes(page('writing/original-piece'))).toContain('BlogPosting');
   });
 
   test('build emits a sitemap without the 404 page, and robots.txt points at it (S4)', () => {
@@ -285,6 +292,131 @@ describe('accessibility', () => {
 
   test('document language is English (A4)', () => {
     expect(page('index').querySelector('html')?.getAttribute('lang')).toBe('en');
+  });
+});
+
+describe('discovery', () => {
+  test.each(ALL_PAGES)('%s has one graph with the person and website under stable ids (D1)', (name) => {
+    const graph = jsonLdGraph(page(name));
+    expect(graph.find((node) => node['@type'] === 'Person')?.['@id']).toBe(PERSON_ID);
+    expect(graph.find((node) => node['@type'] === 'WebSite')?.['@id']).toBe('https://lukehollenback.me/#website');
+  });
+
+  test('the person node carries the facts an engine needs to identify them (D1)', () => {
+    const person = jsonLdNode(page('index'), 'Person')!;
+    const required = ['url', 'email', 'jobTitle', 'worksFor', 'alumniOf', 'knowsAbout', 'address', 'sameAs'];
+    expect(required.filter((key) => !person[key])).toEqual([]);
+  });
+
+  test('bio is a profile page about the person (D2)', () => {
+    expect(jsonLdNode(page('bio'), 'ProfilePage')?.mainEntity).toEqual({ '@id': PERSON_ID });
+  });
+
+  test('services lists one service per offering, provided by the person (D2)', () => {
+    const services = jsonLdGraph(page('services')).filter((node) => node['@type'] === 'Service');
+    expect(services.map((service) => service.name)).toEqual(['Product Strategy', 'Engineering & AI Advisory', 'Website Development']);
+    expect(services.every((service) => service.provider['@id'] === PERSON_ID)).toBe(true);
+  });
+
+  test('writing index lists its entries in order (D2)', () => {
+    const urls = jsonLdNode(page('writing'), 'ItemList')?.itemListElement.map((item: JsonLdNode) => item.url);
+    expect(urls).toEqual([
+      'https://lukehollenback.me/writing/cross-posted-piece',
+      'https://lukehollenback.me/writing/original-piece',
+      'https://lukehollenback.me/writing/fixture-project',
+    ]);
+  });
+
+  test('a cross-posted article is a posting by the person, based on its source (D2)', () => {
+    const posting = jsonLdNode(page('writing/cross-posted-piece'), 'BlogPosting')!;
+    expect(posting.author).toEqual({ '@id': PERSON_ID });
+    expect(posting.isBasedOn).toBe('https://www.example.com/original-piece');
+  });
+
+  test('a project is a creative work that is the same as its home (D2)', () => {
+    const doc = page('writing/fixture-project');
+    expect(jsonLdNode(doc, 'BlogPosting')).toBeUndefined();
+    expect(jsonLdNode(doc, 'CreativeWork')?.sameAs).toBe('https://github.com/example/fixture-project');
+  });
+
+  test('every page but home has a breadcrumb trail ending at itself (D2)', () => {
+    expect(jsonLdNode(page('index'), 'BreadcrumbList')).toBeUndefined();
+    const trail = jsonLdNode(page('writing/original-piece'), 'BreadcrumbList')?.itemListElement.map((item: JsonLdNode) => item.name);
+    expect(trail).toEqual(['Home', 'Writing', 'An original fixture piece']);
+  });
+
+  test.each(ALL_PAGES)('%s has a large share image, an author, and snippet directives (D3)', (name) => {
+    const doc = page(name);
+    expect(meta(doc, 'og:image')).toBe('https://lukehollenback.me/og-image.png');
+    expect([meta(doc, 'og:image:width'), meta(doc, 'og:image:height')]).toEqual(['1200', '630']);
+    expect(meta(doc, 'og:image:alt')).toBeTruthy();
+    expect(meta(doc, 'twitter:card')).toBe('summary_large_image');
+    expect(meta(doc, 'author')).toBe('Luke Hollenback');
+  });
+
+  test('pages are indexable with large previews, except the 404 (D3)', () => {
+    expect(meta(page('bio'), 'robots')).toBe('index, follow, max-image-preview:large, max-snippet:-1');
+    expect(meta(page('404'), 'robots')).toBe('noindex');
+    expect(existsSync(join(siteDir, 'og-image.png'))).toBe(true);
+  });
+
+  test('llms.txt follows the llmstxt.org shape and links entries as Markdown (D4)', () => {
+    const llms = siteFile('llms.txt');
+    expect(llms.startsWith('# Luke Hollenback\n\n> ')).toBe(true);
+    expect(llms).toContain('## Pages');
+    expect(llms).toContain('[An original fixture piece](https://lukehollenback.me/writing/original-piece.md)');
+    expect(llms).toContain('[A fixture project](https://lukehollenback.me/writing/fixture-project.md)');
+    expect(llms).not.toContain('unfinished');
+  });
+
+  test('llms-full.txt carries the bio, services, and full entry text (D5)', () => {
+    const full = siteFile('llms-full.txt');
+    expect(full).toContain('I learned to design for the failure case first.');
+    expect(full).toContain('Opinionated roadmaps.');
+    expect(full).toContain('Metadata-Driven Constraint Planning Engine');
+    expect(full).toContain('Closing paragraph.');
+  });
+
+  test('every entry is served as Markdown and its page links to it (D6)', () => {
+    const markdown = siteFile('writing/cross-posted-piece.md');
+    const alternate = page('writing/cross-posted-piece').querySelector('link[rel="alternate"][type="text/markdown"]');
+    expect(markdown.startsWith('# A cross-posted fixture piece\n')).toBe(true);
+    expect(markdown).toContain('First published at: https://www.example.com/original-piece');
+    expect(markdown).toContain('## A section heading');
+    expect(alternate?.getAttribute('href')).toBe('/writing/cross-posted-piece.md');
+  });
+
+  test('rss feed lists published entries newest first and every page links to it (D7)', () => {
+    const feed = siteFile('rss.xml');
+    const links = [...feed.matchAll(/<item>\s*<title>([^<]*)<\/title>/g)].map((match) => match[1]);
+    expect(links).toEqual(['A cross-posted fixture piece', 'An original fixture piece', 'A fixture project']);
+    const missing = ALL_PAGES.filter((name) => !page(name).querySelector('link[rel="alternate"][type="application/rss+xml"][href="/rss.xml"]'));
+    expect(missing).toEqual([]);
+  });
+
+  test('robots.txt names the AI crawlers it welcomes (D8)', () => {
+    const robots = siteFile('robots.txt');
+    const crawlers = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'CCBot'];
+    expect(crawlers.filter((crawler) => !robots.includes(`User-agent: ${crawler}`))).toEqual([]);
+    expect(robots).not.toMatch(/^Disallow: \/./m);
+  });
+
+  test('the IndexNow key file matches the key the deploy workflow submits (D9)', () => {
+    const workflow = readFileSync(join(projectRoot, '.github/workflows/deploy.yml'), 'utf8');
+    const key = /INDEXNOW_KEY: ([0-9a-f]{32})/.exec(workflow)?.[1];
+    expect(key).toBeDefined();
+    expect(siteFile(`${key}.txt`).trim()).toBe(key);
+  });
+
+  test('the primary font is preloaded and no stylesheet blocks first paint (D10)', () => {
+    const doc = page('index');
+    expect(doc.querySelector('link[rel="preload"][as="font"][type="font/woff2"]')?.getAttribute('href')).toMatch(/latin-wght-normal.*\.woff2$/);
+    expect(doc.querySelectorAll('link[rel="stylesheet"]')).toHaveLength(0);
+  });
+
+  test('footer profile links assert identity with rel=me (D11)', () => {
+    const rels = page('index').querySelectorAll('footer a').map((link) => link.getAttribute('rel'));
+    expect(rels.every((rel) => rel?.split(' ').includes('me'))).toBe(true);
   });
 });
 

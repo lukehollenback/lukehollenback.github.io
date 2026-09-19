@@ -3,7 +3,8 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublishedArticles, type Article } from '../../lib/articles';
 import { SITE } from '../../data/site';
-import { formatMonthYear, isProject, readTimeMinutes, sourceLabelFor, sourceNameFor } from '../../lib/writing';
+import { breadcrumbNode, entryNode } from '../../lib/structured-data';
+import { formatMonthYear, isProject, readTimeMinutes, sourceLabelFor, sourceNameFor, wordCount } from '../../lib/writing';
 
 export async function getStaticPaths() {
   const articles = await getPublishedArticles();
@@ -17,23 +18,29 @@ interface Props {
 const { article } = Astro.props;
 const { data } = article;
 const { Content } = await render(article);
-const articleUrl = new URL(`/writing/${article.id}`, Astro.site).href;
 const project = isProject(data.tags);
 const publishedLabel = formatMonthYear(data.date);
 const metaLine = project ? publishedLabel : `${publishedLabel} · ${readTimeMinutes(article.body ?? '')} min read`;
 // A cross-post's source is another copy of the same text, so it keeps the search credit. A project's source is not.
 const canonicalUrl = project ? undefined : data.sourceUrl;
 
-const blogPostingJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: data.title,
-  description: data.summary,
-  datePublished: data.date.toISOString(),
-  keywords: data.tags,
-  url: articleUrl,
-  author: { '@type': 'Person', name: SITE.name, url: Astro.site?.href },
-};
+const entryPath = `/writing/${article.id}`;
+const structuredData = [
+  entryNode({
+    path: entryPath,
+    title: data.title,
+    summary: data.summary,
+    date: data.date,
+    tags: data.tags,
+    project,
+    wordCount: wordCount(article.body ?? ''),
+    sourceUrl: data.sourceUrl,
+  }),
+  breadcrumbNode([
+    { name: 'Writing', path: '/writing' },
+    { name: data.title, path: entryPath },
+  ]),
+];
 ---
 
 <BaseLayout
@@ -41,7 +48,8 @@ const blogPostingJsonLd = {
   description={data.summary}
   canonicalUrl={canonicalUrl}
   publishedTime={data.date}
-  jsonLd={blogPostingJsonLd}
+  structuredData={structuredData}
+  markdownPath={`${entryPath}.md`}
 >
   <main id="main" class="page article-page">
     <article>

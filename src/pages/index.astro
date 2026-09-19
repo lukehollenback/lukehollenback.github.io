@@ -1,17 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SERVICES } from '../data/services';
+import { SITE } from '../data/site';
 ---
 
-<BaseLayout
-  title="Luke Hollenback — Product, engineering, and AI advisory"
-  description="Luke Hollenback is Vice President of Product Development at Nextworld and an independent advisor to founders on product strategy, architecture, and AI initiatives. Twelve years building enterprise software; three patent filings."
->
+<BaseLayout title="Luke Hollenback — Product, engineering, and AI advisory" description={SITE.description}>
   <main id="main" class="home">
     <div class="home-inner split">
       <div>
-        <p class="availability">Independent product, engineering, and AI advisory.</p>
-        <h1>I've shipped enough to know what to cut.</h1>
+        <p class="availability">{SITE.tagline}</p>
+        <h1>{SITE.statement}</h1>
         <p class="lede">
           Twelve years building hard software that powers real businesses. I now run product development for an
           enterprise AI platform. Multiple patents filed, countless products shipped, and an addiction to simplicity.

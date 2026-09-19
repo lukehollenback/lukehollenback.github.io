@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SERVICES } from '../data/services';
+import { breadcrumbNode, serviceNodes } from '../lib/structured-data';
 ---
 
 <BaseLayout
-  title="Services — Luke Hollenback"
+  title="Product Strategy, AI & Engineering Advisory — Luke Hollenback"
+  structuredData={[...serviceNodes(), breadcrumbNode([{ name: 'Services', path: '/services' }])]}
   description="Three ways to work with Luke Hollenback: product strategy, engineering and AI advisory, and website development. Engagements are shaped around what you actually need."
 >
   <main id="main" class="page">

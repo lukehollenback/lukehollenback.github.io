@@ -72,13 +72,50 @@ merged; contrast stays ≥4.5:1 for body text in both schemes.
   `og:url`, `og:type`, `og:site_name`) and Twitter (`twitter:card`, `twitter:title`,
   `twitter:description`) tags. Articles use `og:type=article` with
   `article:published_time`.
-- **S3.** The JSON-LD `Person` block from the prototype is emitted on every page. Articles add a
-  `BlogPosting` block.
+- **S3.** Structured data → see Discovery (D1, D2).
 - **S4.** The build emits `sitemap-index.xml` and a `robots.txt` that references it. `/404` is
   excluded from the sitemap.
 - **S5.** A cross-posted article (`sourceUrl` set) sets its canonical URL to `sourceUrl`, so the
   original keeps the search credit. A project keeps its own canonical URL: its source is a
   different thing (a repo, a store page), not another copy of the same text.
+
+## Discovery
+
+The site has to be easy to find and easy to read for search engines, link unfurlers, and AI
+agents. Everything here is generated at build time from the same data the pages render.
+
+- **D1.** All structured data on a page is one JSON-LD `@graph`. `Person` (`/#person`) and
+  `WebSite` (`/#website`) appear on every page with stable `@id`s, and every other node refers to
+  them by `@id` rather than repeating them. `Person` carries `url`, `email`, `jobTitle`,
+  `worksFor`, `alumniOf`, `knowsAbout`, `address`, and `sameAs`.
+- **D2.** Page-specific nodes: `/bio` adds `ProfilePage` (`mainEntity` → person); `/services` adds
+  one `Service` per service (`provider` → person); `/writing` adds an `ItemList` of its entries;
+  an article adds `BlogPosting` and a project adds `CreativeWork`, both with `author` → person
+  and, when `sourceUrl` is set, `isBasedOn` (article) or `sameAs` (project). Every page except
+  home adds a `BreadcrumbList`.
+- **D3.** Every page sets `og:image` (1200×630, with width, height, and alt), uses
+  `twitter:card=summary_large_image`, names its `author`, and sets
+  `robots=index, follow, max-image-preview:large, max-snippet:-1`. `/404` is `noindex`.
+  The image is rendered from `scripts/og-image.html` by `scripts/generate-og-image.mjs`.
+- **D4.** `/llms.txt` follows the llmstxt.org shape: H1 name, blockquote summary, then link
+  sections for pages, articles, and projects. Article and project links point at Markdown.
+- **D5.** `/llms-full.txt` is the whole site as plain Markdown: bio, résumé, patent filings,
+  services, and every published entry in full.
+- **D6.** Every published entry is also served as Markdown at `/writing/:slug.md`, and its HTML
+  page links to it with `<link rel="alternate" type="text/markdown">`. Images become
+  `[Image: alt text]` so the text stands alone.
+- **D7.** `/rss.xml` lists every published entry, newest first, and every page links to it with
+  `<link rel="alternate" type="application/rss+xml">`.
+- **D8.** `robots.txt` allows everything and names the major AI crawlers explicitly, so the
+  intent survives any future tightening of the wildcard rule.
+- **D9.** After a successful deploy the workflow submits every sitemap URL to IndexNow. The key
+  is public by design: `public/<key>.txt` must contain the key the workflow sends. A failed
+  submission never fails the deploy.
+- **D10.** The primary font file is preloaded and stylesheets are inlined, so first paint needs
+  no render-blocking request.
+- **D11.** Footer profile links carry `rel="me"`.
+- **D12.** Bio, résumé, patents, and services live in `src/data/` and are rendered from there by
+  both the pages and the text endpoints, so the two cannot disagree.
 
 ## Writing
 
@@ -157,5 +194,5 @@ meta descriptions) are kept minimal.
 ## Deferred
 
 - Work page (one entry per system built). Not in this iteration.
-- Open Graph image.
+- A headshot. `Person` has no `image` until there is one to use.
 - Obsidian-only syntax (wikilinks, `![[embeds]]`). Articles use standard Markdown.
