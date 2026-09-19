@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Source for public/og-image.png. Rendered at 1200x630 by scripts/generate-og-image.mjs. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Schibsted Grotesk Variable';
+        font-weight: 400 900;
+        src: url('../node_modules/@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2') format('woff2-variations');
+      }
+
+      * { box-sizing: border-box; margin: 0; }
+
+      body {
+        width: 1200px;
+        height: 630px;
+        padding: 72px 88px 56px;
+        display: flex;
+        flex-direction: column;
+        background: oklch(1 0 0);
+        color: oklch(0.21 0.005 150);
+        font-family: 'Schibsted Grotesk Variable', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      header { display: flex; align-items: center; gap: 20px; font-size: 30px; letter-spacing: -0.01em; }
+      header img { width: 60px; height: 60px; }
+
+      main { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+      .eyebrow { margin-bottom: 22px; font-size: 25px; letter-spacing: 0.02em; color: oklch(0.47 0.1 157); }
+      h1 { font-size: 92px; font-weight: 600; line-height: 1.04; letter-spacing: -0.032em; }
+
+      footer {
+        padding-top: 26px;
+        text-align: right;
+        font-size: 25px;
+        letter-spacing: 0.01em;
+        color: oklch(0.48 0.006 150);
+        background: linear-gradient(to right, transparent 0, oklch(0.915 0.003 150) 28px, oklch(0.915 0.003 150) calc(100% - 28px), transparent 100%) top / 100% 1px no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <header><img src="../public/favicon.svg" alt="" />Luke Hollenback</header>
+    <main>
+      <p class="eyebrow">Independent product, engineering, and AI advisory.</p>
+      <h1>I've shipped enough<br />to know what to cut.</h1>
+    </main>
+    <footer>lukehollenback.me</footer>
+  </body>
+</html>
