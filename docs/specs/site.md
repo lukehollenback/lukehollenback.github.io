@@ -84,6 +84,12 @@ Pipeline: Obsidian → git → static build. Articles are Markdown files in `con
 Front-matter: `title` (required), `date` (required), `summary` (required), `tags` (list,
 default empty), `sourceUrl` (optional URL), `sourceName` (optional), `draft` (optional).
 
+Images live in `content/writing/assets/` and are referenced relatively (`./assets/name.png`), which
+resolves in both Obsidian and the build. The build emits optimized copies.
+
+Personal projects are writing entries tagged `project`. They link out from the body rather than
+using `sourceUrl`, which is reserved for true cross-posts because it moves the canonical URL.
+
 - **W1.** Invalid or missing required front-matter fails the build.
 - **W2.** The index lists articles newest first with date ('Aug 2026'), title, summary, tags.
 - **W3.** Read time is computed from the body at 230 words per minute, minimum 1 → 'Aug 2026 ·

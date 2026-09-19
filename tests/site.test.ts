@@ -197,7 +197,20 @@ describe('writing', () => {
   });
 
   test('the fabricated prototype articles are not shipped (W8)', () => {
-    expect(readdirSync(join(projectRoot, 'content/writing')).filter((file) => file.endsWith('.md'))).toEqual([]);
+    const fabricatedTitles = [
+      'The AI features that survive contact with real users',
+      'What a platform should refuse to do',
+      'Vocablo: passive language learning on the Home Screen',
+      'Hiring for the awkward size',
+      'Goose: what backtesting taught me about overconfidence',
+      'Buy, build, or rent: the version of the question that matters',
+    ];
+    const contentDir = join(projectRoot, 'content/writing');
+    const shipped = readdirSync(contentDir)
+      .filter((file) => file.endsWith('.md'))
+      .map((file) => readFileSync(join(contentDir, file), 'utf8'))
+      .join('\n');
+    expect(fabricatedTitles.filter((title) => shipped.includes(title))).toEqual([]);
   });
 });
 
