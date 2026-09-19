@@ -1,0 +1,11 @@
+# Managed by claude-template. Do not edit checksums manually.
+template_repo=/Users/luke.hollenback/Developer/claude-template
+profiles=
+
+# Checksums of managed files (used for conflict detection on sync).
+checksum:docs/AI.md=sha256:8d11c0454e17bf915ea7fd8a91e17282ecca2819fe2825400261a4a84fe16ca2
+checksum:docs/CODING_STANDARDS.md=sha256:eaa33f5dfb18aee034042f92872d16c5d76412c2eb3148d6b254e6ecf928309e
+checksum:docs/RULES.md=sha256:86b34ae3530d79034213d4d0531b3aa88451f182324046783e094949551eee55
+checksum:.claude/settings.json=sha256:c0cbbc55d65d87ccf3fc71268beb99a02bd5a92a1a4a46b897d96bbd975a5fbc
+checksum:scripts/claude-template=sha256:ce1354b9a6d51048f8281fc8d5784222ff2545a8e71afb6068b5399f3a2bb9a2
+checksum:scripts/inject-docs.sh=sha256:379dba0f70a177bfb0349e81c58ac918d1e3e9fe30cc79391be0efa0048e7216

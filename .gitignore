@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output and generated files
+dist/
+.astro/
+.test-dist/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Platform tooling
+.wrangler/
+.netlify/
+.vercel/
+
+# IDE and OS artifacts
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Logs
+npm-debug.log*

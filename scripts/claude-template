@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Managed by claude-template. Project-local runner that locates the canonical
+# claude-template repo and forwards all arguments to its claude-template.sh.
+#
+# Resolution order (matches claude-template.sh):
+#   1. template_repo in this project's .claude-template config.
+#   2. $CLAUDE_TEMPLATE_DIR.
+#
+# Runs from the project root regardless of the caller's working directory, so
+# commands that default to the current directory (sync, add-profile, ...)
+# operate on this project.
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CONFIG_FILE="$PROJECT_ROOT/.claude-template"
+
+repo=""
+if [[ -f "$CONFIG_FILE" ]]; then
+  repo="$(grep '^template_repo=' "$CONFIG_FILE" 2>/dev/null | head -1 | cut -d= -f2- || true)"
+fi
+if [[ -z "$repo" || ! -f "$repo/claude-template.sh" ]]; then
+  repo="${CLAUDE_TEMPLATE_DIR:-}"
+fi
+if [[ -z "$repo" || ! -f "$repo/claude-template.sh" ]]; then
+  echo "ERROR: Cannot find the claude-template repo." >&2
+  echo "Set template_repo in .claude-template or export CLAUDE_TEMPLATE_DIR." >&2
+  exit 1
+fi
+
+cd "$PROJECT_ROOT"
+exec "$repo/claude-template.sh" "$@"
