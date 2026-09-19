@@ -290,6 +290,10 @@ describe('accessibility', () => {
     expect(doc.querySelector('main#main')).not.toBeNull();
   });
 
+  test.each(ALL_PAGES)('%s declares its language in the meta tag Bing reads (S6)', (name) => {
+    expect(page(name).querySelector('meta[http-equiv="content-language"]')?.getAttribute('content')).toBe('en-US');
+  });
+
   test('document language is English (A4)', () => {
     expect(page('index').querySelector('html')?.getAttribute('lang')).toBe('en');
   });

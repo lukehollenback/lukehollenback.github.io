@@ -57,7 +57,7 @@ const isCurrentSection = (href: string) => path === href || path.startsWith(`${h
 
   .site-nav {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: clamp(14px, 2.4vw, 30px);
     font-size: 13.5px;
     letter-spacing: 0.04em;
@@ -85,8 +85,19 @@ const isCurrentSection = (href: string) => path === href || path.startsWith(`${h
     line-height: 1;
     color: var(--muted);
     cursor: pointer;
-    /* Sits on the nav's text baseline the way the glyph it replaced did. */
-    align-self: center;
+    /* Link boxes extend 4px below their text for the underline, so centering on them sits the icon low. */
+    margin-bottom: 4px;
+  }
+
+  /* Below this width the nav wraps under the wordmark; it then spans the row with the toggle at the far edge. */
+  @media (width < 480px) {
+    .site-nav {
+      flex-basis: 100%;
+    }
+
+    .theme-toggle {
+      margin-left: auto;
+    }
   }
 
   .theme-toggle svg {

@@ -48,9 +48,15 @@ site itself are now the source of truth for copy and design.
 - **T5.** The toggle shows a moon icon with label 'Switch to dark' in light mode and a sun icon with
   label 'Switch to light' in dark mode. Both are inline SVG: iOS renders the `☀` character as a
   color emoji. It is hidden until JavaScript runs.
-- **T11.** A pill button followed by a text link or note (`.action-row`) stacks deliberately when
-  the pair no longer fits on one line, and the second item is indented by the button's inline
-  padding so its text aligns with the button's label rather than its edge.
+- **T11.** A pill button followed by a companion (`.action-row`) never wraps by accident. Where the
+  pair stops fitting: a companion that repeats the nav (home's 'Check my Experience') is hidden,
+  so a phone shows one clear action; a companion that reassures (the reply note on services)
+  stacks under the button, indented by the button's inline padding so it aligns with the label.
+- **T12.** The theme toggle is optically centered on the nav text, not on the link boxes (which
+  are taller than their text because of the underline padding). When the nav wraps onto its own
+  row, it spans the full width and the toggle sits at the right edge.
+- **T13.** Two hairlines never stack. On home in its single-column layout the services list ends
+  just above the footer's hairline, so the list drops its closing hairline there.
 - **T6.** The fading hairline is one utility (`.hairline-top` / `.hairline-bottom`) backed by one
   `--hairline-gradient` token. No element uses a plain border as a section divider.
 - **T7.** The bio carries exactly four `.highlight` statements (2.5px stroke,
@@ -73,6 +79,8 @@ merged; contrast stays ≥4.5:1 for body text in both schemes.
   `twitter:description`) tags. Articles use `og:type=article` with
   `article:published_time`.
 - **S3.** Structured data → see Discovery (D1, D2).
+- **S6.** Every page declares its language twice: `<html lang>` for browsers and assistive tech,
+  and a `content-language` meta, which Bing's crawler looks for specifically.
 - **S4.** The build emits `sitemap-index.xml` and a `robots.txt` that references it. `/404` is
   excluded from the sitemap.
 - **S5.** A cross-posted article (`sourceUrl` set) sets its canonical URL to `sourceUrl`, so the

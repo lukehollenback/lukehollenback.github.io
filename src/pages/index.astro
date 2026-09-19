@@ -76,16 +76,17 @@ import { SITE } from '../data/site';
     color: var(--body-soft);
   }
 
-  /* 380px is where this button and link stop fitting on one line. */
+  /* 380px is where this button and link stop fitting on one line. The nav already offers Bio. */
   @container (width < 380px) {
-    .action-row-items {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 14px;
-    }
-
     .quiet-link {
-      margin-left: var(--button-pad-inline);
+      display: none;
+    }
+  }
+
+  /* Below 800px the grid is one column and the list ends just above the footer's hairline. */
+  @media (width < 800px) {
+    .service:last-child {
+      background-image: none;
     }
   }
 
