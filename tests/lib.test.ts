@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { nextTheme, parseStoredTheme } from '../src/lib/theme';
 import { articleSlugFromFile } from '../src/lib/article-files';
 import { bioParagraphText } from '../src/data/bio';
-import { collectTags, formatMonthYear, isProject, pieceCountLabel, readTimeMinutes, sourceLabelFor, sourceNameFor, standaloneMarkdown } from '../src/lib/writing';
+import { canonicalSourceFor, collectTags, countLabel, formatMonthYear, readTimeMinutes, sourceLabelFor, sourceNameFor, standaloneMarkdown } from '../src/lib/writing';
 
 describe('theme', () => {
   test('accepts only light or dark as a stored theme (T3)', () => {
@@ -39,22 +39,23 @@ describe('writing helpers', () => {
     expect(sourceNameFor('https://www.nextworld.net/', 'Nextworld Engineering Blog')).toBe('Nextworld Engineering Blog');
   });
 
-  test('an entry is a project when it carries the project tag', () => {
-    expect(isProject(['project', 'games'])).toBe(true);
-    expect(isProject(['ai', 'engineering'])).toBe(false);
+  test('source card is labelled by the kind of entry (W4)', () => {
+    expect(sourceLabelFor('writing')).toBe('First published at');
+    expect(sourceLabelFor('projects')).toBe('Project home');
   });
 
-  test('source card is labelled by what the source is (W4)', () => {
-    expect(sourceLabelFor(['ai'])).toBe('First published at');
-    expect(sourceLabelFor(['project'])).toBe('Project home');
+  test('only an article hands its canonical URL to its source (S5)', () => {
+    expect(canonicalSourceFor('writing', 'https://example.com/x')).toBe('https://example.com/x');
+    expect(canonicalSourceFor('projects', 'https://example.com/x')).toBeUndefined();
   });
 
   test('tags are unique and keep first-seen order (W5)', () => {
     expect(collectTags([['ai', 'product'], ['engineering', 'product'], ['ai']])).toEqual(['ai', 'product', 'engineering']);
   });
 
-  test('count label is singular only for one piece (W5)', () => {
-    expect([0, 1, 2].map(pieceCountLabel)).toEqual(['0 pieces', '1 piece', '2 pieces']);
+  test('count label is singular only for one, in either noun (W5)', () => {
+    expect([0, 1, 2].map((n) => countLabel(n, 'piece'))).toEqual(['0 pieces', '1 piece', '2 pieces']);
+    expect(countLabel(1, 'project')).toBe('1 project');
   });
 });
 

@@ -25,14 +25,16 @@ site itself are now the source of truth for copy and design.
 | `/services` | Services | Three ways I work with you. |
 | `/writing` | Article index with tag filter | I only write about what I've shipped. |
 | `/writing/:slug` | Article | Article title |
+| `/projects` | Project index with tag filter | Things I built to see if I could. |
+| `/projects/:slug` | Project | Project title |
 | `/contact` | Contact form | What are you stuck on? |
 | `/404` | Not found | — |
 
 - **R1.** Every route above is emitted as a static HTML file.
 - **R2.** Every page has exactly one `h1`.
-- **R3.** Header nav links to `/bio`, `/services`, `/writing`, `/contact`; the wordmark links to
+- **R3.** Header nav links to `/bio`, `/services`, `/writing`, `/projects`, `/contact`; the wordmark links to
   `/`. The link for the current section carries `aria-current="page"` (`/writing/:slug` marks
-  Writing).
+  Writing, `/projects/:slug` marks Projects).
 - **R4.** No `href="#..."` route links remain from the prototype.
 
 ## Design tokens and theming
@@ -54,7 +56,8 @@ site itself are now the source of truth for copy and design.
   stacks under the button, indented by the button's inline padding so it aligns with the label.
 - **T12.** The theme toggle is optically centered on the nav text, not on the link boxes (which
   are taller than their text because of the underline padding). When the nav wraps onto its own
-  row, it spans the full width and the toggle sits at the right edge.
+  row, it spans the full width and the toggle moves up to the right end of the wordmark row. The
+  five links fit a 320px screen on one row.
 - **T14.** Hover colors on controls that stay on the page (theme toggle, pill buttons) apply only
   under `@media (hover: hover)`. Touch screens keep `:hover` after a tap, which would leave them
   looking stuck.
@@ -104,7 +107,8 @@ agents. Everything here is generated at build time from the same data the pages 
   them by `@id` rather than repeating them. `Person` carries `url`, `email`, `jobTitle`,
   `worksFor`, `alumniOf`, `knowsAbout`, `address`, and `sameAs`.
 - **D2.** Page-specific nodes: `/bio` adds `ProfilePage` (`mainEntity` → person); `/services` adds
-  one `Service` per service (`provider` → person); `/writing` adds an `ItemList` of its entries;
+  one `Service` per service (`provider` → person); `/writing` and `/projects` each add an
+  `ItemList` of their entries;
   an article adds `BlogPosting` and a project adds `CreativeWork`, both with `author` → person
   and, when `sourceUrl` is set, `isBasedOn` (article) or `sameAs` (project). Every page except
   home adds a `BreadcrumbList`.
@@ -119,7 +123,8 @@ agents. Everything here is generated at build time from the same data the pages 
 - **D6.** Every published entry is also served as Markdown at `/writing/:slug.md`, and its HTML
   page links to it with `<link rel="alternate" type="text/markdown">`. Images become
   `[Image: alt text]` so the text stands alone.
-- **D7.** `/rss.xml` lists every published entry, newest first, and every page links to it with
+- **D7.** `/rss.xml` lists every published article (projects are not posts), newest first, and
+  every page links to it with
   `<link rel="alternate" type="application/rss+xml">`.
 - **D8.** `robots.txt` allows everything and names the major AI crawlers explicitly, so the
   intent survives any future tightening of the wildcard rule.
@@ -132,44 +137,53 @@ agents. Everything here is generated at build time from the same data the pages 
 - **D12.** Bio, résumé, patents, and services live in `src/data/` and are rendered from there by
   both the pages and the text endpoints, so the two cannot disagree.
 
-## Writing
+## Writing and projects
 
-Pipeline: Obsidian → git → static build. Articles are Markdown files in `content/writing/`
-(open that folder as, or inside, an Obsidian vault). The directory can be overridden with the
-`WRITING_DIR` env var; the tests use this to build against fixtures.
+Two collections share one pipeline: Obsidian → git → static build. Articles are Markdown files
+in `content/writing/`; personal projects are Markdown files in `content/projects/` (open either
+folder as, or inside, an Obsidian vault). The directories can be overridden with the
+`WRITING_DIR` and `PROJECTS_DIR` env vars; the tests use these to build against fixtures.
 
 Files are named `yyyy-mm-dd-slug.md` so they sort by date in Obsidian and file managers. The date
-prefix is not part of the URL: `2020-08-17-goose.md` is served at `/writing/goose`.
+prefix is not part of the URL: `2020-08-17-goose.md` is served at `/projects/goose`.
 
 Front-matter: `title` (required), `date` (required), `summary` (required), `tags` (list,
 default empty), `sourceUrl` (optional URL), `sourceName` (optional), `draft` (optional).
 
-Images live in `content/writing/assets/` and are referenced relatively (`./assets/name.png`), which
-resolves in both Obsidian and the build. The build emits optimized copies.
+Images live in the collection's `assets/` folder and are referenced relatively
+(`./assets/name.png`), which resolves in both Obsidian and the build. The build emits optimized
+copies.
 
-Personal projects are writing entries tagged `project`. Every project has the same shape: a
-one-line `summary`, a `sourceUrl` for its primary home (shown in the same source card as a
-cross-post), an optional short body that never repeats the summary, then screenshots. Secondary
-links (a second repo, an App Store page) close the body on one line.
+The folder an entry lives in is the only thing that makes it a project. It decides the URL
+(`/writing/:slug` or `/projects/:slug`), which index lists it, the source card label (W4), and
+whether `sourceUrl` moves the canonical URL (S5). There is no tag or field to keep in sync.
+
+Every project has the same shape: a one-line `summary`, a `sourceUrl` for its primary home (shown
+in the same source card as a cross-post), an optional short body that never repeats the summary,
+then screenshots. Secondary links (a second repo, an App Store page) close the body on one line.
 
 - **W1.** Invalid or missing required front-matter fails the build.
-- **W2.** The index lists articles newest first with date ('Aug 2026'), title, summary, tags.
+- **W2.** Each index lists its entries newest first with date ('Aug 2026'), title, summary, tags.
 - **W3.** Read time is computed from the body at 230 words per minute, minimum 1 → 'Aug 2026 ·
   7 min read'. Projects show the date only; a read time on a two-line entry is noise.
 - **W4.** `sourceUrl` gives an entry a source: the index shows '↗ {sourceName}' and the entry shows
-  the source card linking to `sourceUrl`. The card is labelled 'First published at' for a
-  cross-posted article and 'Project home' for a project. `sourceName` defaults to the URL's host
-  without `www.`.
-- **W5.** Tag chips are the union of all article tags in first-seen order, preceded by '∞'
-  ('All writing'). Chips are buttons with `aria-pressed`; selecting one hides non-matching
-  articles and updates the 'N piece(s)' count. Without JavaScript all articles stay visible.
-- **W6.** `draft: true` articles are excluded from production builds.
+  the source card linking to `sourceUrl`. The card is labelled 'First published at' for an
+  article and 'Project home' for a project. `sourceName` defaults to the URL's host without `www.`.
+- **W5.** Tag chips are the union of that index's tags in first-seen order, preceded by '∞'
+  ('All writing' / 'All projects'). Chips are buttons with `aria-pressed`; selecting one hides
+  non-matching entries and updates the 'N piece(s)' / 'N project(s)' count. Without JavaScript all
+  entries stay visible.
+- **W6.** `draft: true` entries are excluded from production builds.
 - **W9.** A file without a `yyyy-mm-dd-` prefix, or whose prefix differs from its front-matter
   `date`, fails the build with a message naming the file. The front-matter date stays because
   Obsidian properties read it; the check keeps the two from drifting.
 - **W10.** External links in a Markdown body open in a new tab (`target="_blank"`,
   `rel="noopener"`). Links within the site do not.
-- **W7.** With no articles the index renders the heading, intro, and '0 pieces'; no chips.
+- **W11.** Projects lived at `/writing/:slug` until 2026-09-29 and those URLs were submitted to
+  search engines, so every project slug keeps a page at `/writing/:slug` that redirects (meta
+  refresh) to `/projects/:slug`. Redirect pages are not in the sitemap.
+- **W7.** With no entries an index renders the heading, intro, and '0 pieces' / '0 projects'; no
+  chips.
 - **W8.** The fabricated prototype articles are not shipped.
 
 ## Contact

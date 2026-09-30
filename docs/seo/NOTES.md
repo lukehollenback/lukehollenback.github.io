@@ -18,7 +18,7 @@ This file holds the state a future run needs so it does not re-derive it.
 
 ## Deliberate choices. Don't "fix" these.
 
-- Cross-posted articles (sourceUrl, no `project` tag) point their canonical at nextw.com on
+- Cross-posted articles (sourceUrl, in `content/writing/`) point their canonical at nextw.com on
   purpose (spec S5). They are left out of the sitemap for the same reason.
 - No `lastmod` in the sitemap. There is no `updated` front-matter field, so the only available
   date is the publish date, which would be wrong after an edit. Google ignores `lastmod` once it

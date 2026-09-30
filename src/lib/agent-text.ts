@@ -1,25 +1,26 @@
 import { BIO_HEADING, BIO_PARAGRAPHS, PATENTS, TIMELINE, bioParagraphText } from '../data/bio';
 import { SERVICES } from '../data/services';
 import { NAV_ITEMS, SITE, absoluteUrl } from '../data/site';
-import type { Article } from './articles';
-import { canonicalSourceFor, formatMonthYear, isProject, sourceLabelFor, standaloneMarkdown } from './writing';
+import type { Entry } from './entries';
+import { canonicalSourceFor, entryPath, formatMonthYear, sourceLabelFor, standaloneMarkdown, type EntryKind } from './writing';
 
 const PAGE_NOTES: Record<string, string> = {
   '/bio': 'Career story, résumé, and patent filings.',
   '/services': 'The three ways Luke works with founders, with what each engagement delivers.',
-  '/writing': 'Articles on AI, platforms, and engineering leadership, plus personal projects.',
+  '/writing': 'Articles on AI, platforms, and engineering leadership.',
+  '/projects': 'Personal projects: an iOS app, games, and open source tools.',
   '/contact': `Contact form. Email: ${SITE.email}.`,
 };
 
-/** One entry as self-contained Markdown: what `/writing/:slug.md` serves and what llms-full.txt embeds. */
-export function entryMarkdown(article: Article, headingLevel = 1): string {
-  const { data } = article;
+/** One entry as self-contained Markdown: what `/writing/:slug.md` and `/projects/:slug.md` serve and what llms-full.txt embeds. */
+export function entryMarkdown(kind: EntryKind, entry: Entry, headingLevel = 1): string {
+  const { data } = entry;
   const facts = [`Published: ${formatMonthYear(data.date)}`];
   if (data.tags.length > 0) facts.push(`Tags: ${data.tags.join(', ')}`);
-  if (data.sourceUrl) facts.push(`${sourceLabelFor(data.tags)}: ${data.sourceUrl}`);
+  if (data.sourceUrl) facts.push(`${sourceLabelFor(kind)}: ${data.sourceUrl}`);
 
   const sections = [`${'#'.repeat(headingLevel)} ${data.title}`, `> ${data.summary}`, facts.join('  \n')];
-  const body = standaloneMarkdown(article.body ?? '');
+  const body = standaloneMarkdown(entry.body ?? '');
   if (body) sections.push(headingLevel === 1 ? body : demoteHeadings(body, headingLevel));
   return `${sections.join('\n\n')}\n`;
 }
@@ -29,29 +30,27 @@ function demoteHeadings(markdown: string, by: number): string {
   return markdown.replace(/^(#{1,5}) /gm, (_, hashes: string) => `${'#'.repeat(Math.min(6, hashes.length + by - 1))} `);
 }
 
-function entryLinks(articles: Article[]): string {
-  return articles
-    .map(({ id, data }) => `- [${data.title}](${absoluteUrl(`/writing/${id}.md`)}): ${data.summary}`)
-    .join('\n');
+function entryLinks(kind: EntryKind, entries: Entry[]): string {
+  return entries.map(({ id, data }) => `- [${data.title}](${absoluteUrl(`${entryPath(kind, id)}.md`)}): ${data.summary}`).join('\n');
 }
 
 /** llmstxt.org index: a short map of the site for agents, linking to Markdown wherever it exists. */
-export function llmsIndex(articles: Article[]): string {
+export function llmsIndex(articles: Entry[], projects: Entry[]): string {
   const pages = NAV_ITEMS.map((item) => `- [${item.label}](${absoluteUrl(item.href)}): ${PAGE_NOTES[item.href]}`).join('\n');
   const sections = [
     `# ${SITE.name}`,
     `> ${SITE.description}`,
     `${SITE.tagline} Based in ${SITE.location}. The complete text of this site is available as one file at ${absoluteUrl('/llms-full.txt')}.`,
     `## Pages\n\n${pages}`,
-    `## Articles\n\n${entryLinks(articles.filter(({ data }) => !isProject(data.tags)))}`,
-    `## Projects\n\n${entryLinks(articles.filter(({ data }) => isProject(data.tags)))}`,
+    `## Articles\n\n${entryLinks('writing', articles)}`,
+    `## Projects\n\n${entryLinks('projects', projects)}`,
     `## Optional\n\n- [RSS feed](${absoluteUrl('/rss.xml')})\n- [Sitemap](${absoluteUrl('/sitemap-index.xml')})\n- [LinkedIn](${SITE.linkedin})\n- [GitHub](${SITE.github})`,
   ];
   return `${sections.join('\n\n')}\n`;
 }
 
 /** The whole site as one Markdown document. */
-export function llmsFull(articles: Article[]): string {
+export function llmsFull(articles: Entry[], projects: Entry[]): string {
   const resume = TIMELINE.map((job) => `- ${job.years}: ${job.role}. ${job.org}`).join('\n');
   const patents = PATENTS.map((patent) => `- [${patent.title}](${patent.href}) (${patent.number})`).join('\n');
   const services = SERVICES.map((service) =>
@@ -71,7 +70,8 @@ export function llmsFull(articles: Article[]): string {
     `### Résumé\n\n${resume}`,
     `### Patent Filings\n\n${patents}`,
     `## Services\n\n${services}`,
-    `## Writing and Projects\n\n${articles.map((article) => entryMarkdown(article, 3)).join('\n')}`,
+    `## Writing\n\n${articles.map((article) => entryMarkdown('writing', article, 3)).join('\n')}`,
+    `## Projects\n\n${projects.map((project) => entryMarkdown('projects', project, 3)).join('\n')}`,
   ];
   return `${sections.join('\n\n').trim()}\n`;
 }
@@ -80,10 +80,10 @@ function escapeXml(text: string): string {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-export function rssFeed(articles: Article[]): string {
+export function rssFeed(articles: Entry[]): string {
   const items = articles
     .map(({ id, data }) => {
-      const url = absoluteUrl(`/writing/${id}`);
+      const url = absoluteUrl(entryPath('writing', id));
       return `    <item>
       <title>${escapeXml(data.title)}</title>
       <link>${url}</link>
@@ -118,11 +118,12 @@ export function sitemapIndex(): string {
 }
 
 /** Only pages that are their own canonical: listing a cross-post here would contradict the canonical it points elsewhere. */
-export function sitemap(articles: Article[]): string {
+export function sitemap(articles: Entry[], projects: Entry[]): string {
   const paths = [
     '/',
     ...NAV_ITEMS.map((item) => item.href),
-    ...articles.filter(({ data }) => !canonicalSourceFor(data.tags, data.sourceUrl)).map(({ id }) => `/writing/${id}`),
+    ...articles.filter(({ data }) => !canonicalSourceFor('writing', data.sourceUrl)).map(({ id }) => entryPath('writing', id)),
+    ...projects.map(({ id }) => entryPath('projects', id)),
   ];
   const urls = paths.map((path) => `  <url><loc>${escapeXml(absoluteUrl(path))}</loc></url>`).join('\n');
 

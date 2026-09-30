@@ -1,6 +1,7 @@
 import { llmsFull } from '../lib/agent-text';
-import { getPublishedArticles } from '../lib/articles';
+import { getPublishedEntries } from '../lib/entries';
 
 export async function GET() {
-  return new Response(llmsFull(await getPublishedArticles()), { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  const text = llmsFull(await getPublishedEntries('writing'), await getPublishedEntries('projects'));
+  return new Response(text, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }

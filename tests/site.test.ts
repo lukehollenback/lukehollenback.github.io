@@ -9,9 +9,11 @@ const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const siteDir = join(projectRoot, '.test-dist/with-articles');
 const emptySiteDir = join(projectRoot, '.test-dist/no-articles');
 
-const STATIC_PAGES = ['index', 'bio', 'services', 'writing', 'contact', '404'];
-const ARTICLE_PAGES = ['writing/cross-posted-piece', 'writing/original-piece', 'writing/fixture-project'];
-const ALL_PAGES = [...STATIC_PAGES, ...ARTICLE_PAGES];
+const STATIC_PAGES = ['index', 'bio', 'services', 'writing', 'projects', 'contact', '404'];
+const ENTRY_PAGES = ['writing/cross-posted-piece', 'writing/original-piece', 'projects/fixture-project'];
+/** Old project URLs that redirect to /projects (W11). */
+const REDIRECT_PAGES = ['writing/fixture-project'];
+const ALL_PAGES = [...STATIC_PAGES, ...ENTRY_PAGES];
 
 function page(name: string, dir = siteDir): HTMLElement {
   return parse(readFileSync(join(dir, `${name}.html`), 'utf8'));
@@ -58,6 +60,7 @@ describe('routes', () => {
       bio: 'I like problems bigger than code.',
       services: 'Three ways I work with you.',
       writing: "I only write about what I've shipped.",
+      projects: 'Things I built to see if I could.',
       contact: 'What are you stuck on?',
     });
   });
@@ -65,13 +68,14 @@ describe('routes', () => {
   test('header nav links to real routes and the wordmark links home (R3)', () => {
     const header = page('index').querySelector('header');
     const hrefs = header?.querySelectorAll('a').map((link) => link.getAttribute('href'));
-    expect(hrefs).toEqual(['/', '/bio', '/services', '/writing', '/contact']);
+    expect(hrefs).toEqual(['/', '/bio', '/services', '/writing', '/projects', '/contact']);
   });
 
   test.each([
     ['bio', '/bio'],
     ['writing', '/writing'],
     ['writing/original-piece', '/writing'],
+    ['projects/fixture-project', '/projects'],
   ])('%s marks its section as the current page (R3)', (name, href) => {
     const current = page(name).querySelectorAll('header nav a[aria-current="page"]');
     expect(current.map((link) => link.getAttribute('href'))).toEqual([href]);
@@ -167,12 +171,12 @@ describe('metadata', () => {
       .filter((file) => file.endsWith('.html'))
       .map((file) => file.replace(/\.html$/, ''))
       .sort();
-    expect(builtPages).toEqual([...ALL_PAGES].sort());
+    expect(builtPages).toEqual([...ALL_PAGES, ...REDIRECT_PAGES].sort());
   });
 
   test('a project keeps its own canonical URL (S5)', () => {
-    const canonical = page('writing/fixture-project').querySelector('link[rel="canonical"]');
-    expect(canonical?.getAttribute('href')).toBe('https://lukehollenback.me/writing/fixture-project');
+    const canonical = page('projects/fixture-project').querySelector('link[rel="canonical"]');
+    expect(canonical?.getAttribute('href')).toBe('https://lukehollenback.me/projects/fixture-project');
   });
 
   test('a cross-post points its canonical URL at the original (S5)', () => {
@@ -183,13 +187,13 @@ describe('metadata', () => {
 
 describe('writing', () => {
   test('index lists published articles newest first (W2, W6)', () => {
-    const titles = page('writing').querySelectorAll('[data-article] h2').map((heading) => heading.text.trim());
-    expect(titles).toEqual(['A cross-posted fixture piece', 'An original fixture piece', 'A fixture project']);
+    const titles = page('writing').querySelectorAll('[data-entry] h2').map((heading) => heading.text.trim());
+    expect(titles).toEqual(['A cross-posted fixture piece', 'An original fixture piece']);
   });
 
   test('index shows month and year for each article (W2)', () => {
-    const dates = page('writing').querySelectorAll('[data-article] time').map((time) => time.text.trim());
-    expect(dates).toEqual(['Aug 2026', 'Mar 2026', 'Nov 2025']);
+    const dates = page('writing').querySelectorAll('[data-entry] time').map((time) => time.text.trim());
+    expect(dates).toEqual(['Aug 2026', 'Mar 2026']);
   });
 
   test('article shows date and computed read time (W3)', () => {
@@ -197,7 +201,7 @@ describe('writing', () => {
   });
 
   test('a cross-post is marked on the index and carries the source card (W4)', () => {
-    const indexEntry = page('writing').querySelector('[data-article]');
+    const indexEntry = page('writing').querySelector('[data-entry]');
     const card = page('writing/cross-posted-piece').querySelector('.source-card');
     expect(indexEntry?.text).toContain('↗ example.com');
     expect(card?.getAttribute('href')).toBe('https://www.example.com/original-piece');
@@ -205,16 +209,16 @@ describe('writing', () => {
   });
 
   test('a project uses the same source card, labelled as its home (W4)', () => {
-    const indexEntry = page('writing').querySelectorAll('[data-article]')[2];
-    const card = page('writing/fixture-project').querySelector('.source-card');
-    expect(indexEntry.text).toContain('↗ GitHub');
+    const indexEntry = page('projects').querySelector('[data-entry]');
+    const card = page('projects/fixture-project').querySelector('.source-card');
+    expect(indexEntry?.text).toContain('↗ GitHub');
     expect(card?.getAttribute('href')).toBe('https://github.com/example/fixture-project');
     expect(card?.text).toContain('Project home');
     expect(card?.text).not.toContain('First published at');
   });
 
   test('a project shows its date without a read time (W3)', () => {
-    expect(page('writing/fixture-project').querySelector('.article-meta')?.text.trim()).toBe('Nov 2025');
+    expect(page('projects/fixture-project').querySelector('.article-meta')?.text.trim()).toBe('Nov 2025');
   });
 
   test('an original article has no source card (W4)', () => {
@@ -223,18 +227,31 @@ describe('writing', () => {
 
   test('tag chips are pressable buttons in first-seen order, led by the all chip (W5)', () => {
     const chips = page('writing').querySelectorAll('button.chip');
-    expect(chips.map((chip) => chip.text.trim())).toEqual(['∞', 'ai', 'product', 'leadership', 'project']);
-    expect(chips.map((chip) => chip.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false', 'false', 'false']);
+    expect(chips.map((chip) => chip.text.trim())).toEqual(['∞', 'ai', 'product', 'leadership']);
+    expect(chips.map((chip) => chip.getAttribute('aria-pressed'))).toEqual(['true', 'false', 'false', 'false']);
     expect(chips[0].getAttribute('aria-label')).toBe('All writing');
   });
 
+  test('the projects index has its own chips, all-label, and count noun (W5)', () => {
+    const doc = page('projects');
+    expect(doc.querySelectorAll('button.chip').map((chip) => chip.text.trim())).toEqual(['∞', 'games']);
+    expect(doc.querySelector('button.chip')?.getAttribute('aria-label')).toBe('All projects');
+    expect(doc.querySelector('[data-entry-count]')?.text.trim()).toBe('1 project');
+  });
+
+  test('an old project URL redirects to its new home and stays out of the sitemap (W11)', () => {
+    const redirect = siteFile('writing/fixture-project.html');
+    expect(redirect).toMatch(/http-equiv="refresh" content="0;url=\/projects\/fixture-project"/);
+    expect(siteFile('sitemap-0.xml')).not.toContain('/writing/fixture-project');
+  });
+
   test('count label reflects the number of published pieces (W5)', () => {
-    expect(page('writing').querySelector('[data-article-count]')?.text.trim()).toBe('3 pieces');
+    expect(page('writing').querySelector('[data-entry-count]')?.text.trim()).toBe('2 pieces');
   });
 
   test('the date prefix on a file name is not part of the URL (W9)', () => {
     expect(existsSync(join(siteDir, 'writing/2026-03-02-original-piece.html'))).toBe(false);
-    expect(page('writing').querySelectorAll('[data-article]').map((entry) => entry.getAttribute('href'))).toContain('/writing/original-piece');
+    expect(page('writing').querySelectorAll('[data-entry]').map((entry) => entry.getAttribute('href'))).toContain('/writing/original-piece');
   });
 
   test('external links in a body open in a new tab and internal links do not (W10)', () => {
@@ -253,8 +270,9 @@ describe('writing', () => {
   test('an empty index keeps the heading and shows zero pieces without chips (W7)', () => {
     const doc = page('writing', emptySiteDir);
     expect(doc.querySelectorAll('h1')).toHaveLength(1);
-    expect(doc.querySelector('[data-article-count]')?.text.trim()).toBe('0 pieces');
+    expect(doc.querySelector('[data-entry-count]')?.text.trim()).toBe('0 pieces');
     expect(doc.querySelectorAll('button.chip')).toHaveLength(0);
+    expect(page('projects', emptySiteDir).querySelector('[data-entry-count]')?.text.trim()).toBe('0 projects');
   });
 
   test('the fabricated prototype articles are not shipped (W8)', () => {
@@ -266,10 +284,9 @@ describe('writing', () => {
       'Goose: what backtesting taught me about overconfidence',
       'Buy, build, or rent: the version of the question that matters',
     ];
-    const contentDir = join(projectRoot, 'content/writing');
-    const shipped = readdirSync(contentDir)
-      .filter((file) => file.endsWith('.md'))
-      .map((file) => readFileSync(join(contentDir, file), 'utf8'))
+    const shipped = ['content/writing', 'content/projects']
+      .map((dir) => join(projectRoot, dir))
+      .flatMap((dir) => readdirSync(dir).filter((file) => file.endsWith('.md')).map((file) => readFileSync(join(dir, file), 'utf8')))
       .join('\n');
     expect(fabricatedTitles.filter((title) => shipped.includes(title))).toEqual([]);
   });
@@ -344,7 +361,9 @@ describe('discovery', () => {
     expect(urls).toEqual([
       'https://lukehollenback.me/writing/cross-posted-piece',
       'https://lukehollenback.me/writing/original-piece',
-      'https://lukehollenback.me/writing/fixture-project',
+    ]);
+    expect(jsonLdNode(page('projects'), 'ItemList')?.itemListElement.map((item: JsonLdNode) => item.url)).toEqual([
+      'https://lukehollenback.me/projects/fixture-project',
     ]);
   });
 
@@ -355,7 +374,7 @@ describe('discovery', () => {
   });
 
   test('a project is a creative work that is the same as its home (D2)', () => {
-    const doc = page('writing/fixture-project');
+    const doc = page('projects/fixture-project');
     expect(jsonLdNode(doc, 'BlogPosting')).toBeUndefined();
     expect(jsonLdNode(doc, 'CreativeWork')?.sameAs).toBe('https://github.com/example/fixture-project');
   });
@@ -364,6 +383,8 @@ describe('discovery', () => {
     expect(jsonLdNode(page('index'), 'BreadcrumbList')).toBeUndefined();
     const trail = jsonLdNode(page('writing/original-piece'), 'BreadcrumbList')?.itemListElement.map((item: JsonLdNode) => item.name);
     expect(trail).toEqual(['Home', 'Writing', 'An original fixture piece']);
+    const projectTrail = jsonLdNode(page('projects/fixture-project'), 'BreadcrumbList')?.itemListElement.map((item: JsonLdNode) => item.name);
+    expect(projectTrail).toEqual(['Home', 'Projects', 'A fixture project']);
   });
 
   test.each(ALL_PAGES)('%s has a large share image, an author, and snippet directives (D3)', (name) => {
@@ -386,7 +407,8 @@ describe('discovery', () => {
     expect(llms.startsWith('# Luke Hollenback\n\n> ')).toBe(true);
     expect(llms).toContain('## Pages');
     expect(llms).toContain('[An original fixture piece](https://lukehollenback.me/writing/original-piece.md)');
-    expect(llms).toContain('[A fixture project](https://lukehollenback.me/writing/fixture-project.md)');
+    expect(llms).toContain('[A fixture project](https://lukehollenback.me/projects/fixture-project.md)');
+    expect(siteFile('projects/fixture-project.md')).toContain('Project home: https://github.com/example/fixture-project');
     expect(llms).not.toContain('unfinished');
   });
 
@@ -410,7 +432,7 @@ describe('discovery', () => {
   test('rss feed lists published entries newest first and every page links to it (D7)', () => {
     const feed = siteFile('rss.xml');
     const links = [...feed.matchAll(/<item>\s*<title>([^<]*)<\/title>/g)].map((match) => match[1]);
-    expect(links).toEqual(['A cross-posted fixture piece', 'An original fixture piece', 'A fixture project']);
+    expect(links).toEqual(['A cross-posted fixture piece', 'An original fixture piece']);
     const missing = ALL_PAGES.filter((name) => !page(name).querySelector('link[rel="alternate"][type="application/rss+xml"][href="/rss.xml"]'));
     expect(missing).toEqual([]);
   });

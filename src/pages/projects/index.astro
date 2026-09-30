@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryIndex from '../../components/EntryIndex.astro';
+import { getPublishedEntries } from '../../lib/entries';
+import { breadcrumbNode, entryListNode } from '../../lib/structured-data';
+import { entryPath } from '../../lib/writing';
+
+const projects = await getPublishedEntries('projects');
+const entryList = entryListNode(projects.map(({ id, data }) => ({ title: data.title, path: entryPath('projects', id) })));
+---
+
+<BaseLayout
+  title="Projects: Apps, Games & Open Source Tools — Luke Hollenback"
+  structuredData={[entryList, breadcrumbNode([{ name: 'Projects', path: '/projects' }])]}
+  description="Personal projects by Luke Hollenback: an iOS vocabulary app, games built in Godot, and open source tools in Go, Python, and C."
+>
+  <main id="main" class="page">
+    <div class="page-inner">
+      <h1 class="page-title">Things I built to see if I could.</h1>
+      <p class="page-intro">Side projects, games, and tools, most of them open source. Newest first.</p>
+      <EntryIndex kind="projects" entries={projects} />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-title {
+    max-width: 24ch;
+  }
+
+  .page-intro {
+    max-width: 54ch;
+    margin-bottom: clamp(28px, 5vh, 44px);
+  }
+</style>

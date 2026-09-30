@@ -1,6 +1,7 @@
 import { sitemap } from '../lib/agent-text';
-import { getPublishedArticles } from '../lib/articles';
+import { getPublishedEntries } from '../lib/entries';
 
 export async function GET() {
-  return new Response(sitemap(await getPublishedArticles()), { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
+  const xml = sitemap(await getPublishedEntries('writing'), await getPublishedEntries('projects'));
+  return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 }

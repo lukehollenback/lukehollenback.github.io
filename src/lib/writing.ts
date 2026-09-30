@@ -24,24 +24,31 @@ export function sourceNameFor(sourceUrl: string, sourceName?: string): string {
   return sourceName ?? new URL(sourceUrl).hostname.replace(/^www\./, '');
 }
 
-/** Projects share the writing pipeline; the `project` tag is what sets them apart. */
-export function isProject(tags: string[]): boolean {
-  return tags.includes('project');
+export type EntryKind = 'writing' | 'projects';
+
+/** Everything that differs between the two collections, in one place. */
+export const ENTRY_KINDS = {
+  writing: { path: '/writing', label: 'Writing', allLabel: 'All writing', noun: 'piece', sourceLabel: 'First published at' },
+  projects: { path: '/projects', label: 'Projects', allLabel: 'All projects', noun: 'project', sourceLabel: 'Project home' },
+} as const;
+
+export function entryPath(kind: EntryKind, slug: string): string {
+  return `${ENTRY_KINDS[kind].path}/${slug}`;
+}
+
+export function sourceLabelFor(kind: EntryKind): string {
+  return ENTRY_KINDS[kind].sourceLabel;
 }
 
 /** A cross-post's source is another copy of the same text, so it keeps the search credit. A project's source is not. */
-export function canonicalSourceFor(tags: string[], sourceUrl?: string): string | undefined {
-  return isProject(tags) ? undefined : sourceUrl;
-}
-
-export function sourceLabelFor(tags: string[]): string {
-  return isProject(tags) ? 'Project home' : 'First published at';
+export function canonicalSourceFor(kind: EntryKind, sourceUrl?: string): string | undefined {
+  return kind === 'projects' ? undefined : sourceUrl;
 }
 
 export function collectTags(tagLists: string[][]): string[] {
   return [...new Set(tagLists.flat())];
 }
 
-export function pieceCountLabel(count: number): string {
-  return `${count} ${count === 1 ? 'piece' : 'pieces'}`;
+export function countLabel(count: number, noun: string): string {
+  return `${count} ${noun}${count === 1 ? '' : 's'}`;
 }

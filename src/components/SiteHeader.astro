@@ -89,14 +89,33 @@ const isCurrentSection = (href: string) => path === href || path.startsWith(`${h
     margin-bottom: 4px;
   }
 
-  /* Below this width the nav wraps under the wordmark; it then spans the row with the toggle at the far edge. */
+  /*
+   * Below this width the nav wraps under the wordmark and takes the full row. The toggle moves up
+   * beside the wordmark, where there is room, instead of competing with five links for the row.
+   */
   @media (width < 480px) {
+    .site-header {
+      position: relative;
+    }
+
     .site-nav {
       flex-basis: 100%;
     }
 
     .theme-toggle {
-      margin-left: auto;
+      position: absolute;
+      top: calc(clamp(15px, 3vh, 22px) + 4px);
+      right: var(--shell-pad);
+      margin-bottom: 0;
+    }
+  }
+
+  /* The five links only just fit a 320px screen with the spacing pulled in. */
+  @media (width < 360px) {
+    .site-nav {
+      gap: 11px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
     }
   }
 
