@@ -2,6 +2,29 @@
 
 One entry per review run, newest first. Standing context lives in `NOTES.md`.
 
+## 2026-10-03
+
+No site changes. The audit found nothing broken, and nothing worth adding to a site this size.
+
+**Audited:** every sitemap URL plus the three cross-posted articles (status, title, description,
+canonical, OG, JSON-LD, `h1`, image `alt`), the new `/projects` pages from the 2026-09-29 split,
+the thirteen `/writing/:slug` redirect pages (each is `noindex` with a canonical at the new
+URL), robots.txt, llms.txt, llms-full.txt, RSS, the 404 page, all 53 outbound links and assets
+(all 200), and that the live site matches `main` (last deploy 2026-09-30).
+
+**Found, left alone:**
+
+- A web search for the domain still returns the legacy title, two weeks after the rebuild.
+- The old Markdown copies (`/writing/<project>.md`) are 404 since the split. GitHub Pages cannot
+  redirect a non-HTML file, and llms.txt already lists the new paths.
+- Third-party profiles (theorg.com, happenstance.ai) still describe Luke as Director or Senior
+  Director of Software Engineering, which disagrees with the site's 'Vice President of Product
+  Development'.
+
+**Needs Luke:** request re-indexing of the home page, check the Pages report for the old project
+URLs, bring the outside profiles in line with the current title, and the still-open Bluesky
+`sameAs` question. Details in the run summary.
+
 ## 2026-09-19
 
 First run. The rebuild (deployed 2026-09-18) already covers nearly all of technical SEO and AI

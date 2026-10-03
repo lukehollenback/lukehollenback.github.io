@@ -3,7 +3,7 @@
 Working notes for the recurring SEO and AI-discovery review. What each run did is in `LOG.md`.
 This file holds the state a future run needs so it does not re-derive it.
 
-## Already in place (verified 2026-09-19, don't re-audit from scratch)
+## Already in place (verified 2026-09-19 and 2026-10-03, don't re-audit from scratch)
 
 - Per-page title, description, canonical, OG/Twitter, `og:image` 1200×630, robots max-snippet.
 - One JSON-LD `@graph` per page: Person, WebSite, ProfilePage, Service, ItemList, BlogPosting /
@@ -32,7 +32,16 @@ This file holds the state a future run needs so it does not re-derive it.
 ## Open items / watch list
 
 - Search results still showed the legacy title "Luke Hollenback · Leadership · Innovation ·
-  Experience" on 2026-09-19, the day after the rebuild went live. Check whether it has refreshed.
+  Experience" on 2026-10-03, fifteen days after the rebuild. Check whether it has refreshed.
+- Projects moved from `/writing/:slug` to `/projects/:slug` on 2026-09-29. The old URLs are
+  meta-refresh redirect pages (`noindex`, canonical at the new URL). Their `.md` copies are 404
+  and can't be redirected on GitHub Pages. Leave both.
+- theorg.com and happenstance.ai carry an older job title than the site (checked 2026-10-03).
+  Only Luke can change those. Check whether they have caught up.
+- A project's JSON-LD is a plain `CreativeWork`. `SoftwareSourceCode` / `SoftwareApplication`
+  would be more exact, but there is no rich result for the first and the second raises Search
+  Console warnings without `offers` and ratings. Considered 2026-10-03 and skipped as not worth
+  the code.
 - `/vocablo/privacy.txt` (legacy site) is 404 now. The App Store listing uses
   `getvocablo.com/legal/privacy.txt`, so nothing depends on it.
 - `lukehollenback.me/wallpaper-generator/` is another repo's Pages site under this domain and is
