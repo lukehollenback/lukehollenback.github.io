@@ -3,7 +3,7 @@
 Working notes for the recurring SEO and AI-discovery review. What each run did is in `LOG.md`.
 This file holds the state a future run needs so it does not re-derive it.
 
-## Already in place (verified 2026-09-19 and 2026-10-03, don't re-audit from scratch)
+## Already in place (verified 2026-09-19, 2026-10-03 and 2026-10-10, don't re-audit from scratch)
 
 - Per-page title, description, canonical, OG/Twitter, `og:image` 1200×630, robots max-snippet.
 - One JSON-LD `@graph` per page: Person, WebSite, ProfilePage, Service, ItemList, BlogPosting /
@@ -32,12 +32,17 @@ This file holds the state a future run needs so it does not re-derive it.
 ## Open items / watch list
 
 - Search results still showed the legacy title "Luke Hollenback · Leadership · Innovation ·
-  Experience" on 2026-10-03, fifteen days after the rebuild. Check whether it has refreshed.
+  Experience" on 2026-10-10, three weeks after the rebuild. Check whether it has refreshed.
+- Bing (check via DuckDuckGo, since bing.com serves junk to scripted queries) had indexed only
+  the home page as of 2026-10-10, with the legacy title and snippet. IndexNow returns 200 on
+  every deploy and on manual resubmission, so the pipeline works; Bing just has not recrawled.
+  If it is still stale after Luke has checked Bing Webmaster Tools, stop re-checking each run.
 - Projects moved from `/writing/:slug` to `/projects/:slug` on 2026-09-29. The old URLs are
   meta-refresh redirect pages (`noindex`, canonical at the new URL). Their `.md` copies are 404
   and can't be redirected on GitHub Pages. Leave both.
-- theorg.com and happenstance.ai carry an older job title than the site (checked 2026-10-03).
-  Only Luke can change those. Check whether they have caught up.
+- theorg.com and happenstance.ai carry an older job title than the site (theorg.com rechecked
+  2026-10-10, still stale). LinkedIn's search-result title had caught up by 2026-10-10. Only Luke
+  can change the other two.
 - A project's JSON-LD is a plain `CreativeWork`. `SoftwareSourceCode` / `SoftwareApplication`
   would be more exact, but there is no rich result for the first and the second raises Search
   Console warnings without `offers` and ratings. Considered 2026-10-03 and skipped as not worth
@@ -47,6 +52,10 @@ This file holds the state a future run needs so it does not re-derive it.
 - `lukehollenback.me/wallpaper-generator/` is another repo's Pages site under this domain and is
   not in this sitemap. Out of scope unless Luke wants it discoverable.
 
+- Cross-posted articles carry a `BlogPosting` whose `url` and `mainEntityOfPage` are the mirror
+  URL while the canonical is nextw.com. That is consistent across all four mirrors and the
+  canonical wins, so it is not a conflict. Noted 2026-10-10 so it is not re-examined.
+
 ## Useful checks
 
 ```bash
@@ -54,4 +63,8 @@ curl -s https://lukehollenback.me/sitemap-0.xml
 curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://www.lukehollenback.me/
 ```
 
-WebSearch for "Luke Hollenback" shows what the indexes currently hold for the name.
+WebSearch in extended mode for `"Luke Hollenback" lukehollenback.me` shows what the indexes hold
+for the name; standard mode returns unrelated people. For Bing's view, open DuckDuckGo in the
+browser pane with `site:lukehollenback.me` (bing.com itself returns unrelated results to a fresh
+session). The deploy's IndexNow step prints nothing on success; a manual POST with `-w
+'%{http_code}'` shows the code.

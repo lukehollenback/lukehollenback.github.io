@@ -2,6 +2,35 @@
 
 One entry per review run, newest first. Standing context lives in `NOTES.md`.
 
+## 2026-10-10
+
+No site changes. The audit found nothing broken. The one real finding is off-site: the Bing index
+is still stale three weeks after the rebuild, despite IndexNow accepting every ping.
+
+**Audited:** every sitemap URL plus the four cross-posted articles (status, title, description,
+canonical, OG, JSON-LD, `h1`, image `alt` and dimensions), the new mirror 'The AI Stack Trifecta'
+(deployed 2026-10-09: canonical at nextw.com which self-canonicalizes and returns 200, left out of
+the sitemap, present in llms.txt, llms-full.txt, RSS and the Writing index, its three diagrams
+served as sized WebP with alt text, `.md` copy answers 200), the project redirect pages, host
+variants, robots.txt, the IndexNow key file, the 404 page, the 75 outbound links and assets,
+and the deploy log for the 2026-10-09 push.
+
+**Found, left alone:**
+
+- The Gartner link in the new article returns 403 to every non-browser client (bot wall). It
+  works for readers. Not a broken link.
+- DuckDuckGo, which is Bing-backed, lists only the home page for `site:lukehollenback.me`, with
+  the legacy title and a legacy Firetale snippet. Bing has not recrawled since the rebuild even
+  though IndexNow has returned 200 on every deploy. A manual resubmission of all nineteen
+  sitemap URLs this run also returned 200 from api.indexnow.org and from bing.com/indexnow.
+  IndexNow queues a crawl; it does not force one, and Bing has so far not spent the crawl.
+- Google's index still shows the legacy title for the home page (same as 2026-10-03).
+- theorg.com still says 'Senior Director Of Software Engineering & AI'. LinkedIn's title in
+  search results now reads 'VP @ Nextworld', so that one has caught up.
+- The `/writing` title is 67 characters and may be clipped in results. Not worth a content edit.
+
+**Needs Luke:** Bing Webmaster Tools and Search Console checks. Details in the run summary.
+
 ## 2026-10-03
 
 No site changes. The audit found nothing broken, and nothing worth adding to a site this size.
