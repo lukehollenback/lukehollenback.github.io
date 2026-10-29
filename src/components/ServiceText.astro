@@ -1,0 +1,31 @@
+---
+import { serviceSegments, type ServiceText } from '../data/services';
+import { isExternalHref } from '../lib/external-links';
+
+interface Props {
+  text: ServiceText;
+}
+
+const { text } = Astro.props;
+---
+
+{
+  serviceSegments(text).map((segment) =>
+    typeof segment === 'string' ? (
+      segment
+    ) : isExternalHref(segment.href) ? (
+      <a href={segment.href} target="_blank" rel="noopener">
+        {segment.text}
+      </a>
+    ) : (
+      <a href={segment.href}>{segment.text}</a>
+    ),
+  )
+}
+
+<style>
+  /* Matches article prose links, so inline links read the same wherever they appear. */
+  a {
+    border-bottom: 1px solid var(--underline);
+  }
+</style>

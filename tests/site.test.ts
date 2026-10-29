@@ -41,6 +41,7 @@ function siteFile(path: string): string {
 }
 
 const PERSON_ID = 'https://lukehollenback.me/#person';
+const REINVENT_RECORDING = 'https://www.youtube.com/watch?v=BlBWQHAF_Ss';
 
 describe('routes', () => {
   test.each(ALL_PAGES)('emits %s as a static file (R1)', (name) => {
@@ -354,6 +355,25 @@ describe('discovery', () => {
     const services = jsonLdGraph(page('services')).filter((node) => node['@type'] === 'Service');
     expect(services.map((service) => service.name)).toEqual(['Product Strategy', 'Engineering & AI Advisory', 'Speaking & Writing']);
     expect(services.every((service) => service.provider['@id'] === PERSON_ID)).toBe(true);
+  });
+
+  test('service links render as anchors on the page, Markdown in the text endpoint, and plain text in structured data (D13)', () => {
+    const speaking = page('services').querySelectorAll('section.service')[2];
+    const talk = speaking.querySelector(`a[href="${REINVENT_RECORDING}"]`);
+    expect(talk?.text).toBe('AWS re:Invent');
+    expect(talk?.getAttribute('target')).toBe('_blank');
+    expect(talk?.getAttribute('rel')).toBe('noopener');
+    const writing = speaking.querySelector('a[href="/writing"]');
+    expect(writing?.text).toBe('Writing page');
+    expect(writing?.getAttribute('target')).toBeUndefined();
+
+    const full = siteFile('llms-full.txt');
+    expect(full).toContain(`In 2025 I spoke at [AWS re:Invent](${REINVENT_RECORDING})`);
+    expect(full).toContain('- Guest essays and columns, with samples on the [Writing page](https://lukehollenback.me/writing).');
+
+    const description = jsonLdGraph(page('services')).find((node) => node.name === 'Speaking & Writing')?.description;
+    expect(description).toContain('In 2025 I spoke at AWS re:Invent on democratizing machine learning');
+    expect(description).not.toContain('[');
   });
 
   test('writing index lists its entries in order (D2)', () => {

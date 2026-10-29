@@ -1,5 +1,5 @@
 import { BIO_HEADING, BIO_PARAGRAPHS, PATENTS, TIMELINE, bioParagraphText } from '../data/bio';
-import { SERVICES } from '../data/services';
+import { SERVICES, serviceTextMarkdown } from '../data/services';
 import { NAV_ITEMS, SITE, absoluteUrl } from '../data/site';
 import type { Entry } from './entries';
 import { canonicalSourceFor, entryPath, formatMonthYear, sourceLabelFor, standaloneMarkdown, type EntryKind } from './writing';
@@ -57,8 +57,8 @@ export function llmsFull(articles: Entry[], projects: Entry[]): string {
     [
       `### ${service.name}`,
       `${service.tagline} ${service.shape}`,
-      service.body,
-      `What you get:\n\n${service.deliverables.map((deliverable) => `- ${deliverable}`).join('\n')}`,
+      serviceTextMarkdown(service.body),
+      `What you get:\n\n${service.deliverables.map((deliverable) => `- ${serviceTextMarkdown(deliverable)}`).join('\n')}`,
     ].join('\n\n'),
   ).join('\n\n');
 

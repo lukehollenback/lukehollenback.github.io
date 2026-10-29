@@ -1,5 +1,39 @@
+import { absoluteUrl } from './site';
+
+/** A run of service text. Linked runs render as anchors on the page and as Markdown links in the text endpoints. */
+export type ServiceSegment = string | { text: string; href: string };
+/** Plain text, or segments when the text needs an inline link. */
+export type ServiceText = string | ServiceSegment[];
+
+export function serviceSegments(text: ServiceText): ServiceSegment[] {
+  return typeof text === 'string' ? [text] : text;
+}
+
+/** The text with link words kept in place, for structured data. */
+export function serviceTextPlain(text: ServiceText): string {
+  return serviceSegments(text)
+    .map((segment) => (typeof segment === 'string' ? segment : segment.text))
+    .join('');
+}
+
+/** Markdown with absolute link targets, for the text endpoints. */
+export function serviceTextMarkdown(text: ServiceText): string {
+  return serviceSegments(text)
+    .map((segment) => (typeof segment === 'string' ? segment : `[${segment.text}](${absoluteUrl(segment.href)})`))
+    .join('');
+}
+
+type Service = {
+  num: string;
+  name: string;
+  tagline: string;
+  shape: string;
+  body: ServiceText;
+  deliverables: ServiceText[];
+};
+
 /** Shown as a summary list on the home page and in full on the services page. */
-export const SERVICES = [
+export const SERVICES: readonly Service[] = [
   {
     num: '01',
     name: 'Product Strategy',
@@ -31,12 +65,16 @@ export const SERVICES = [
     name: 'Speaking & Writing',
     tagline: 'Talks and essays on shipping AI.',
     shape: 'Keynotes, panels, briefings, and essays. Scoped per event.',
-    body: "I talk and write about what it actually takes to ship AI into enterprise software: the architecture decisions, the organizational ones, and the features that should never have been built. I'm a fit for smaller conferences that want a practitioner on stage, and for investment firms that want a closed-door session with their partners or portfolio companies. Everything I say in public is tested against things I've shipped.",
+    body: [
+      'I talk and write about what it actually takes to ship AI into enterprise software, from the architecture to the org chart. In 2025 I spoke at ',
+      { text: 'AWS re:Invent', href: 'https://www.youtube.com/watch?v=BlBWQHAF_Ss' },
+      " on democratizing machine learning for people who aren't data scientists. I'm a fit for conferences that want a practitioner on stage, and for investment firms that want a closed-door session with their partners or portfolio companies. Everything I say in public is tested against things I've shipped.",
+    ],
     deliverables: [
       'Keynotes and panels at conferences.',
       'Closed-door briefings for investment firms and their portfolio companies.',
       'Podcast and interview appearances.',
-      'Guest essays and columns, with samples on the Writing page.',
+      ['Guest essays and columns, with samples on the ', { text: 'Writing page', href: '/writing' }, '.'],
     ],
   },
-] as const;
+];

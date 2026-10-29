@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceText from '../components/ServiceText.astro';
 import { SERVICES } from '../data/services';
 import { breadcrumbNode, serviceNodes } from '../lib/structured-data';
 ---
@@ -25,10 +26,16 @@ import { breadcrumbNode, serviceNodes } from '../lib/structured-data';
               <p class="eyebrow eyebrow-accent shape">{service.shape}</p>
             </div>
             <div>
-              <p class="service-body">{service.body}</p>
+              <p class="service-body">
+                <ServiceText text={service.body} />
+              </p>
               <p class="eyebrow">What you get</p>
               <ul>
-                {service.deliverables.map((deliverable) => <li>{deliverable}</li>)}
+                {service.deliverables.map((deliverable) => (
+                  <li>
+                    <ServiceText text={deliverable} />
+                  </li>
+                ))}
               </ul>
             </div>
           </section>

@@ -136,6 +136,10 @@ agents. Everything here is generated at build time from the same data the pages 
 - **D11.** Footer profile links carry `rel="me"`.
 - **D12.** Bio, résumé, patents, and services live in `src/data/` and are rendered from there by
   both the pages and the text endpoints, so the two cannot disagree.
+- **D13.** Service body and deliverable text may carry inline links. The page renders them as
+  anchors (external ones open in a new tab with `rel="noopener"`, as article links do), the text
+  endpoints render them as Markdown links with absolute URLs, and structured data carries the
+  plain text with the link words kept in place.
 
 ## Writing and projects
 

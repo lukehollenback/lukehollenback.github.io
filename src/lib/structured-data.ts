@@ -1,4 +1,4 @@
-import { SERVICES } from '../data/services';
+import { SERVICES, serviceTextPlain } from '../data/services';
 import { SITE, absoluteUrl } from '../data/site';
 
 export type JsonLdNode = Record<string, unknown>;
@@ -72,7 +72,7 @@ export function serviceNodes(): JsonLdNode[] {
     '@type': 'Service',
     name: service.name,
     serviceType: service.name,
-    description: service.body,
+    description: serviceTextPlain(service.body),
     url: absoluteUrl('/services'),
     provider: PERSON_REF,
     areaServed: 'Worldwide',
