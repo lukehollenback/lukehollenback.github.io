@@ -306,7 +306,7 @@ describe('contact', () => {
     expect(form?.querySelector('select[name="topic"]')?.querySelectorAll('option').map((option) => option.text)).toEqual([
       'Product Strategy',
       'Engineering & AI Advisory',
-      'Website Development',
+      'Speaking & Writing',
       'Something else',
     ]);
     expect(form?.querySelector('[name="_gotcha"]')).not.toBeNull();
@@ -352,7 +352,7 @@ describe('discovery', () => {
 
   test('services lists one service per offering, provided by the person (D2)', () => {
     const services = jsonLdGraph(page('services')).filter((node) => node['@type'] === 'Service');
-    expect(services.map((service) => service.name)).toEqual(['Product Strategy', 'Engineering & AI Advisory', 'Website Development']);
+    expect(services.map((service) => service.name)).toEqual(['Product Strategy', 'Engineering & AI Advisory', 'Speaking & Writing']);
     expect(services.every((service) => service.provider['@id'] === PERSON_ID)).toBe(true);
   });
 

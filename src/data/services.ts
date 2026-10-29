@@ -28,15 +28,15 @@ export const SERVICES = [
   },
   {
     num: '03',
-    name: 'Website Development',
-    tagline: 'Built to be found, by people and agents.',
-    shape: 'Often one to three weeks, fixed price.',
-    body: "Buyers now arrive two ways: a search result, or an answer some model wrote about you. Both reward the same things — semantic markup, structured data, plain text a crawler can actually read, and pages that load fast. Static by default, content in files you control, hosted for pennies. No page builder you'll be fighting with.",
+    name: 'Speaking & Writing',
+    tagline: 'Talks and essays on shipping AI.',
+    shape: 'Keynotes, panels, briefings, and essays. Scoped per event.',
+    body: "I talk and write about what it actually takes to ship AI into enterprise software: the architecture decisions, the organizational ones, and the features that should never have been built. I'm a fit for smaller conferences that want a practitioner on stage, and for investment firms that want a closed-door session with their partners or portfolio companies. Everything I say in public is tested against things I've shipped.",
     deliverables: [
-      'Design and build, mobile first.',
-      'Markdown content pipeline you own.',
-      'Structured data and machine-readable markup.',
-      'Technical SEO, analytics, and handoff.',
+      'Keynotes and panels at conferences.',
+      'Closed-door briefings for investment firms and their portfolio companies.',
+      'Podcast and interview appearances.',
+      'Guest essays and columns, with samples on the Writing page.',
     ],
   },
 ] as const;
